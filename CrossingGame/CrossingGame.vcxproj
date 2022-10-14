@@ -139,6 +139,9 @@
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\gameInterfaces\playfield.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
