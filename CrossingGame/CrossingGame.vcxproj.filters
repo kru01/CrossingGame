@@ -47,6 +47,9 @@
     <ClInclude Include="CVEHICLE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CCONSTANT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt">

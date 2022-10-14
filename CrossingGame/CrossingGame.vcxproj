@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCONSOLE.h" />
+    <ClInclude Include="CCONSTANT.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CVEHICLE.h" />
