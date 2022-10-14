@@ -16,6 +16,9 @@
     <Filter Include="Resource Files\gameInterfaces">
       <UniqueIdentifier>{ff3a11b3-6286-4b42-aadf-c2f1a069085f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\objects">
+      <UniqueIdentifier>{e75e59a8-9a49-46fa-b43c-4fcd76a3caff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +57,9 @@
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt">
       <Filter>Resource Files\gameInterfaces</Filter>
+    </Text>
+    <Text Include="assets\objects\human.txt">
+      <Filter>Resource Files\objects</Filter>
     </Text>
   </ItemGroup>
 </Project>
