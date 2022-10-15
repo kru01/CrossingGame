@@ -1,29 +1,28 @@
 #pragma once
 #include "CCONSOLE.h"
 
-void CCONSOLE::setWindowDimension(int width, int height) {
-	HWND console = GetConsoleWindow();
+void CCONSOLE::resizeConsole(int width, int height) {
 	RECT rec;
-	GetWindowRect(console, &rec);
-	MoveWindow(console, rec.left, rec.top, width, height, true);
+	GetWindowRect(CONSOLE_WINDOW, &rec);
+	MoveWindow(CONSOLE_WINDOW, rec.left, rec.top, width, height, true);
 }
 
 void CCONSOLE::fixConsoleWindow() {
-	HWND consoleWindow = GetConsoleWindow();
-	long style = GetWindowLongW(consoleWindow, GWL_STYLE);
+	long style = GetWindowLongW(CONSOLE_WINDOW, GWL_STYLE);
 	style = style & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME;
-	SetWindowLongW(consoleWindow, GWL_STYLE, style);
+	SetWindowLongW(CONSOLE_WINDOW, GWL_STYLE, style);
 }
 
 void CCONSOLE::initConsoleWindow() {
-	setWindowDimension(1400, 800);
+	resizeConsole(1400, 800);
 	fixConsoleWindow();
+	system("color 70");
 	SetConsoleOutputCP(65001);
 }
 
 void CCONSOLE::goToXY(int x, int y) {
 	COORD coord = { x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	SetConsoleCursorPosition(CONSOLE_STD_OUTPUT, coord);
 }
 
 short CCONSOLE::isPressed(int nVirtKey) {
@@ -38,6 +37,7 @@ void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int sleepTi
 		return;
 	}
 
+	setColor(color);
 	string buffer;
 
 	while (getline(infile, buffer)) {
@@ -50,10 +50,15 @@ void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int sleepTi
 	infile.close();
 }
 
-void CCONSOLE::eraseGraphics(POINT start, POINT end) {
+void CCONSOLE::eraseGraphics(POINT start, POINT end, int color) {
+	setColor(color);
 	string eraser(end.x - start.x, ' ');
 	for (int i = start.y; i < end.y; i++) {
 		goToXY(start.x, i);
 		cout << eraser;
 	}
+}
+
+void CCONSOLE::setColor(int colorCode) {
+	SetConsoleTextAttribute(CONSOLE_STD_OUTPUT, colorCode);
 }

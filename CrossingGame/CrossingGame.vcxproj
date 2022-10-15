@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CANIMAL.cpp" />
+    <ClCompile Include="CCAR.cpp" />
     <ClCompile Include="CCONSOLE.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
@@ -134,14 +136,18 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CANIMAL.h" />
+    <ClInclude Include="CCAR.h" />
     <ClInclude Include="CCONSOLE.h" />
     <ClInclude Include="CCONSTANT.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CPEOPLE.h" />
+    <ClInclude Include="CTRUCK.h" />
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt" />
+    <Text Include="assets\objects\car.txt" />
     <Text Include="assets\objects\human.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -36,6 +36,12 @@
     <ClCompile Include="CVEHICLE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CANIMAL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CCAR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPEOPLE.h">
@@ -53,12 +59,24 @@
     <ClInclude Include="CCONSTANT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CANIMAL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CCAR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTRUCK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt">
       <Filter>Resource Files\gameInterfaces</Filter>
     </Text>
     <Text Include="assets\objects\human.txt">
+      <Filter>Resource Files\objects</Filter>
+    </Text>
+    <Text Include="assets\objects\car.txt">
       <Filter>Resource Files\objects</Filter>
     </Text>
   </ItemGroup>
