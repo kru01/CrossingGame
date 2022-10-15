@@ -4,6 +4,8 @@
 #include "CCAR.h"
 #include "CCONSTANT.h"
 
+const int FIELD_COLOR = colors::BLACK;
+
 class CGAME {
 	CPEOPLE player;
 	CCAR car;

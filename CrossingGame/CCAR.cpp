@@ -1,6 +1,11 @@
 #pragma once
 #include "CCAR.h"
 
+CCAR::CCAR(int x, int y) : CVEHICLE(x, y) {
+	this->width = CAR_WIDTH;
+	this->height = CAR_HEIGHT;
+}
+
 void CCAR::move() {
 	x += fieldConstraints::HOR_SPEED;
 
@@ -11,5 +16,5 @@ void CCAR::move() {
 	}
 
 	CCONSOLE::eraseGraphics({ x - fieldConstraints::HOR_SPEED, y }, { x, y + CAR_HEIGHT });
-	CCONSOLE::drawGraphics("assets/objects/car.txt", { x, y }, 112);
+	CCONSOLE::drawGraphics("assets/objects/car.txt", { x, y }, CAR_COLOR);
 }

@@ -8,13 +8,13 @@ CGAME::CGAME() {
 
 void CGAME::initGame() {
 	system("cls");
-	CCONSOLE::drawGraphics("assets/gameInterfaces/playfield.txt", { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, 112);
+	CCONSOLE::drawGraphics("assets/gameInterfaces/playfield.txt", { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, FIELD_COLOR);
 }
 
 void CGAME::runGame() {
 	while (1) {
 		if (!player.isDead()) {
-			CCONSOLE::drawGraphics("assets/objects/human.txt", player.getCoord(), 112);
+			CCONSOLE::drawGraphics("assets/objects/human.txt", { player.getX(), player.getY() }, HUMAN_COLOR);
 			updatePosPeople();
 		}
 
@@ -32,5 +32,9 @@ void CGAME::updatePosPeople() {
 
 template<class Obj>
 void CGAME::updatePosObject(Obj* obj) {
-	obj->move();
+	if(obj->canMove()) obj->move();
+	if (player.isImpact(obj)) {
+		player.setDead(true);
+		obj->setMove(false);
+	}
 }

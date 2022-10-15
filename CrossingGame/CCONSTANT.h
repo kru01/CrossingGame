@@ -20,3 +20,22 @@ enum fieldConstraints : int {
 	BOUND_LEFT = F_LEFT + HOR_SPEED,
 	BOUND_RIGHT = F_RIGHT - HOR_SPEED
 };
+
+enum colors : int {
+	BLACK,
+	BLUE,
+	GREEN,
+	AQUA,
+	RED,
+	PURPLE,
+	YELLOW,
+	WHITE,
+	GRAY,
+	LIGHT_BLUE,
+	LIGHT_GREEN,
+	LIGHT_AQUA,
+	LIGHT_RED,
+	LIGHT_PURPLE,
+	LIGHT_YELLOW,
+	BRIGHT_WHITE
+};

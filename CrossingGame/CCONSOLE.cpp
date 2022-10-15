@@ -13,11 +13,30 @@ void CCONSOLE::fixConsoleWindow() {
 	SetWindowLongW(CONSOLE_WINDOW, GWL_STYLE, style);
 }
 
+void CCONSOLE::disableQuickEditMode() {
+	DWORD prevMode;
+	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
+	GetConsoleMode(hInput, &prevMode);
+	SetConsoleMode(hInput, ENABLE_EXTENDED_FLAGS | (prevMode & ~ENABLE_QUICK_EDIT_MODE));
+}
+
+void CCONSOLE::centerConsole() {
+	RECT rectClient, rectWindow;
+	GetClientRect(CONSOLE_WINDOW, &rectClient);
+	GetWindowRect(CONSOLE_WINDOW, &rectWindow);
+	int posX = GetSystemMetrics(SM_CXSCREEN) / 2 - (rectWindow.right - rectWindow.left) / 2;
+	int posY = GetSystemMetrics(SM_CYSCREEN) / 2 - (rectWindow.bottom - rectWindow.top) / 2;
+	MoveWindow(CONSOLE_WINDOW, posX, posY, rectClient.right - rectClient.left, rectClient.bottom - rectClient.top, true);
+}
+
 void CCONSOLE::initConsoleWindow() {
 	resizeConsole(1400, 800);
+	centerConsole();
 	fixConsoleWindow();
 	system("color 70");
 	SetConsoleOutputCP(65001);
+	disableQuickEditMode();
+	ShowScrollBar(GetConsoleWindow(), SB_BOTH, 0);
 }
 
 void CCONSOLE::goToXY(int x, int y) {
@@ -59,6 +78,6 @@ void CCONSOLE::eraseGraphics(POINT start, POINT end, int color) {
 	}
 }
 
-void CCONSOLE::setColor(int colorCode) {
-	SetConsoleTextAttribute(CONSOLE_STD_OUTPUT, colorCode);
+void CCONSOLE::setColor(int text, int background) {
+	SetConsoleTextAttribute(CONSOLE_STD_OUTPUT, background * 16 + text);
 }
