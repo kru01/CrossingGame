@@ -13,9 +13,9 @@ class CCONSOLE {
 public:
 	static void initConsoleWindow();
 
-	static void goToXY(short x, short y);
+	static void goToXY(int x, int y);
 	static short isPressed(int);
 
-	static void drawGraphics(string fileName, COORD coord, int color, int sleepTime = 0);
+	static void drawGraphics(string fileName, POINT coord, int color, int sleepTime = 0);
 	static void eraseGraphics(POINT start, POINT end);
 };

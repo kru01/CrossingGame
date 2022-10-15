@@ -21,7 +21,7 @@ void CCONSOLE::initConsoleWindow() {
 	SetConsoleOutputCP(65001);
 }
 
-void CCONSOLE::goToXY(short x, short y) {
+void CCONSOLE::goToXY(int x, int y) {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
@@ -30,7 +30,7 @@ short CCONSOLE::isPressed(int nVirtKey) {
 	return GetAsyncKeyState(nVirtKey) & 0x01;
 }
 
-void CCONSOLE::drawGraphics(string fileName, COORD coord, int color, int sleepTime) {
+void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int sleepTime) {
 	ifstream infile(fileName);
 
 	if (!infile.good()) {
@@ -42,16 +42,16 @@ void CCONSOLE::drawGraphics(string fileName, COORD coord, int color, int sleepTi
 
 	while (getline(infile, buffer)) {
 		Sleep(sleepTime);
-		goToXY(coord.X, coord.Y);
+		goToXY(coord.x, coord.y);
 		cout << buffer;
-		coord.Y++;
+		coord.y++;
 	}
 
 	infile.close();
 }
 
 void CCONSOLE::eraseGraphics(POINT start, POINT end) {
-	string eraser(end.x - start.x + 1, ' ');
+	string eraser(end.x - start.x, ' ');
 	for (int i = start.y; i < end.y; i++) {
 		goToXY(start.x, i);
 		cout << eraser;

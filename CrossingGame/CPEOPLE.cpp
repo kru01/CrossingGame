@@ -1,49 +1,44 @@
 #pragma once
 #include "CPEOPLE.h"
 
-CPEOPLE::CPEOPLE(short x, short y) {
-	this->X = x;
-	this->Y = y;
-	this->width = this->height = 3;
+CPEOPLE::CPEOPLE(int x, int y) {
+	this->x = x;
+	this->y = y;
 	this->isAlive = true;
 }
 
 void CPEOPLE::goUp() {
-	if (Y <= fieldConstraints::TOP + fieldConstraints::ROAD_WIDTH) return;
-	CCONSOLE::eraseGraphics({ X, Y }, { X + width, Y + height });
-	Y -= fieldConstraints::ROAD_WIDTH;
-	CCONSOLE::drawGraphics("assets/objects/human.txt", { X, Y }, 0);
+	if (y <= fieldConstraints::BOUND_TOP) return;
+	CCONSOLE::eraseGraphics({ x, y }, { x + HUMAN_WIDTH, y + HUMAN_HEIGHT });
+	y -= fieldConstraints::VER_SPEED;
+	CCONSOLE::drawGraphics("assets/objects/human.txt", { x, y }, 0);
 }
 
 void CPEOPLE::goDown() {
-	if (Y >= fieldConstraints::BOTTOM - fieldConstraints::ROAD_WIDTH) return;
-	CCONSOLE::eraseGraphics({ X, Y }, { X + width, Y + height });
-	Y += fieldConstraints::ROAD_WIDTH;
-	CCONSOLE::drawGraphics("assets/objects/human.txt", { X, Y }, 0);
+	if (y >= fieldConstraints::BOUND_BOTTOM) return;
+	CCONSOLE::eraseGraphics({ x, y }, { x + HUMAN_WIDTH, y + HUMAN_HEIGHT });
+	y += fieldConstraints::VER_SPEED;
+	CCONSOLE::drawGraphics("assets/objects/human.txt", { x, y }, 0);
 }
 
 void CPEOPLE::goLeft() {
-	if (X <= fieldConstraints::LEFT) return;
-	CCONSOLE::eraseGraphics({ X, Y }, { X + width, Y + height });
-	X -= fieldConstraints::HORIZONTAL_SPEED;
-	CCONSOLE::drawGraphics("assets/objects/human.txt", { X, Y }, 0);
+	if (x <= fieldConstraints::BOUND_LEFT) return;
+	CCONSOLE::eraseGraphics({ x, y }, { x + HUMAN_WIDTH, y + HUMAN_HEIGHT });
+	x -= fieldConstraints::HOR_SPEED;
+	CCONSOLE::drawGraphics("assets/objects/human.txt", { x, y }, 0);
 }
 
 void CPEOPLE::goRight() {
-	if (X >= fieldConstraints::RIGHT) return;
-	CCONSOLE::eraseGraphics({ X, Y }, { X + width, Y + height });
-	X += fieldConstraints::HORIZONTAL_SPEED;
-	CCONSOLE::drawGraphics("assets/objects/human.txt", { X, Y }, 0);
+	if (x >= fieldConstraints::BOUND_RIGHT - HUMAN_WIDTH) return;
+	CCONSOLE::eraseGraphics({ x, y }, { x + HUMAN_WIDTH, y + HUMAN_HEIGHT });
+	x += fieldConstraints::HOR_SPEED;
+	CCONSOLE::drawGraphics("assets/objects/human.txt", { x, y }, 0);
 }
 
 bool CPEOPLE::isDead() {
 	return !isAlive;
 }
 
-COORD CPEOPLE::getCoord() {
-	return { X, Y };
-}
-
-int CPEOPLE::getWidth() {
-	return width;
+POINT CPEOPLE::getCoord() {
+	return { x, y };
 }

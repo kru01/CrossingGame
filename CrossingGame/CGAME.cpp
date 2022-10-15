@@ -2,12 +2,12 @@
 #include "CGAME.h"
 
 CGAME::CGAME() {
-	player = CPEOPLE(55, 27);
+	player = CPEOPLE((fieldConstraints::F_RIGHT + fieldConstraints::F_LEFT) / 2 - HUMAN_WIDTH, fieldConstraints::F_BOTTOM - HUMAN_HEIGHT);
 }
 
 void CGAME::initGame() {
 	system("cls");
-	CCONSOLE::drawGraphics("assets/gameInterfaces/playfield.txt", { 0, 0 }, 0);
+	CCONSOLE::drawGraphics("assets/gameInterfaces/playfield.txt", { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, 0);
 }
 
 void CGAME::runGame() {

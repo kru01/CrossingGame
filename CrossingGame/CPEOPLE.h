@@ -2,14 +2,16 @@
 #include "CCONSOLE.h"
 #include "CCONSTANT.h"
 
+const int HUMAN_WIDTH = 3,
+		  HUMAN_HEIGHT = 3;
+
 class CPEOPLE {
-	short X, Y;
-	int width, height;
+	int x, y;
 	bool isAlive;
 
 public:
 	CPEOPLE() = default;
-	CPEOPLE(short x, short y);
+	CPEOPLE(int x, int y);
 
 	void goUp();
 	void goDown();
@@ -17,6 +19,5 @@ public:
 	void goRight();
 
 	bool isDead();
-	COORD getCoord();
-	int getWidth();
+	POINT getCoord();
 };
