@@ -1,2 +1,21 @@
 #pragma once
 #include "CBUS.h"
+
+CBUS::CBUS(int x, int y) : CVEHICLE(x, y) {
+	this->width = BUS_WIDTH;
+	this->height = BUS_WIDTH;
+}
+
+void CBUS::move() {
+	x -= fieldConstraints::HOR_SPEED;
+
+	if (x <= fieldConstraints::BOUND_LEFT) {
+		CCONSOLE::eraseGraphics({ x, y }, { x + BUS_WIDTH + fieldConstraints::HOR_SPEED, y + BUS_HEIGHT });
+		isMoving = false;
+		x = BUS_SPAWN_COORD.x;
+		return; 
+	}
+
+	CCONSOLE::eraseGraphics({ x + BUS_WIDTH - 1, y }, { x + BUS_WIDTH + fieldConstraints::HOR_SPEED, y + BUS_HEIGHT });
+	CCONSOLE::drawGraphics("assets/objects/bus.txt", { x, y }, BUS_COLOR);
+}

@@ -3,6 +3,7 @@
 #include "CCONSOLE.h"
 #include "CPEOPLE.h"
 #include "CCAR.h"
+#include "CBUS.h"
 #include "CCONSTANT.h"
 
 const int FIELD_COLOR = colors::BLACK;
@@ -11,6 +12,7 @@ const int OBJECT_LIMIT = 5, OBJECT_GAP = 25;
 class CGAME {
 	CPEOPLE player;
 	vector<CCAR*> carsVect;
+	vector<CBUS*> busesVect; 
 
 	int level;
 

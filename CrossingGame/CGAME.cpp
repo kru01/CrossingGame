@@ -6,6 +6,7 @@ CGAME::CGAME() {
 	
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
 		carsVect.push_back(new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y));
+		busesVect.push_back(new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y)); 
 	}
 
 	level = 1;
@@ -26,6 +27,7 @@ void CGAME::runGame() {
 		}
 
 		updatePosObject(carsVect);
+		updatePosObject(busesVect); 
 		Sleep(300);
 	}
 }
