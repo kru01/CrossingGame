@@ -22,7 +22,7 @@ public:
 
 	bool isImpact(CVEHICLE* obj);
 
-	void setDead(bool confirm);
+	void setDead(bool flag);
 	bool isDead();
 	
 	int getX();

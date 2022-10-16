@@ -24,8 +24,8 @@ int CVEHICLE::getHeight() {
 	return height;
 }
 
-void CVEHICLE::setMove(bool confirm) {
-	isMoving = confirm;
+void CVEHICLE::setMove(bool flag) {
+	isMoving = flag;
 }
 
 bool CVEHICLE::canMove() {

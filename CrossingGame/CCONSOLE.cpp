@@ -29,6 +29,13 @@ void CCONSOLE::centerConsole() {
 	MoveWindow(CONSOLE_WINDOW, posX, posY, rectClient.right - rectClient.left, rectClient.bottom - rectClient.top, true);
 }
 
+void CCONSOLE::showConsoleCursor(bool flag) {
+	CONSOLE_CURSOR_INFO cursorInfo;
+	cursorInfo.dwSize = 100;
+	cursorInfo.bVisible = flag;
+	SetConsoleCursorInfo(CONSOLE_STD_OUTPUT, &cursorInfo);
+}
+
 void CCONSOLE::initConsoleWindow() {
 	resizeConsole(1400, 800);
 	centerConsole();
@@ -37,6 +44,7 @@ void CCONSOLE::initConsoleWindow() {
 	SetConsoleOutputCP(65001);
 	disableQuickEditMode();
 	ShowScrollBar(GetConsoleWindow(), SB_BOTH, 0);
+	showConsoleCursor(false);
 }
 
 void CCONSOLE::goToXY(int x, int y) {

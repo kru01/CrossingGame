@@ -40,8 +40,8 @@ bool CPEOPLE::isImpact(CVEHICLE* obj) {
 		&& y >= obj->getY() && y <= obj->getY() + obj->getHeight();
 }
 
-void CPEOPLE::setDead(bool confirm) {
-	isAlive = confirm;
+void CPEOPLE::setDead(bool flag) {
+	isAlive = flag;
 }
 
 bool CPEOPLE::isDead() {

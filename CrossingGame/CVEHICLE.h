@@ -18,6 +18,6 @@ public:
 	int getWidth();
 	int getHeight();
 
-	void setMove(bool confirm);
+	void setMove(bool flag);
 	bool canMove();
 };

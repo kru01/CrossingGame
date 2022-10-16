@@ -24,8 +24,8 @@ int CANIMAL::getHeight() {
 	return height;
 }
 
-void CANIMAL::setMove(bool confirm) {
-	isMoving = confirm;
+void CANIMAL::setMove(bool flag) {
+	isMoving = flag;
 }
 
 bool CANIMAL::canMove() {

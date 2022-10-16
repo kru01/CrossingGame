@@ -16,6 +16,7 @@ class CCONSOLE {
 	static void fixConsoleWindow();
 	static void disableQuickEditMode();
 	static void centerConsole();
+	static void showConsoleCursor(bool flag);
 
 public:
 	static void initConsoleWindow();
