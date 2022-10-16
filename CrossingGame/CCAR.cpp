@@ -11,6 +11,7 @@ void CCAR::move() {
 
 	if (x >= fieldConstraints::BOUND_RIGHT - CAR_WIDTH) {
 		CCONSOLE::eraseGraphics({ x - fieldConstraints::HOR_SPEED, y }, { x + CAR_WIDTH, y + CAR_HEIGHT });
+		isMoving = false;
 		x = CAR_SPAWN_COORD.x;
 		return;
 	}

@@ -5,7 +5,7 @@ CVEHICLE::CVEHICLE(int x, int y) {
 	this->x = x;
 	this->y = y;
 	this->width = this->height = 0;
-	this->isMoving = true;
+	this->isMoving = false;
 }
 
 int CVEHICLE::getX() {
