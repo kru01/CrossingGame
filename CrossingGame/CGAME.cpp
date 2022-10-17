@@ -26,15 +26,14 @@ void CGAME::runGame() {
 			updatePosPeople();
 		}
 
-		updatePosObject(carsVect);
-		updatePosObject(busesVect); 
+		updatePosVehicle();
 		Sleep(300);
 	}
 }
 
 template<class Obj>
 bool CGAME::isValidDistance(Obj*& obj1, Obj*& obj2) {
-	return abs(obj1->getX() - obj2->getX()) >= OBJECT_GAP;
+	return abs(obj1->getX() - obj2->getX()) >= OBJECT_GAP + obj1->getWidth();
 }
 
 void CGAME::updatePosPeople() {
@@ -42,6 +41,11 @@ void CGAME::updatePosPeople() {
 	if (CCONSOLE::isPressed('S')) player.goDown();
 	if (CCONSOLE::isPressed('A')) player.goLeft();
 	if (CCONSOLE::isPressed('D')) player.goRight();
+}
+
+void CGAME::updatePosVehicle() {
+	updatePosObject(carsVect);
+	updatePosObject(busesVect);
 }
 
 template<class Obj>
