@@ -6,6 +6,7 @@ CGAME::CGAME() {
 	
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
 		carsVect.push_back(new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y));
+		busesVect.push_back(new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y)); 
 	}
 
 	level = 1;
@@ -25,14 +26,14 @@ void CGAME::runGame() {
 			updatePosPeople();
 		}
 
-		updatePosObject(carsVect);
+		updatePosVehicle();
 		Sleep(300);
 	}
 }
 
 template<class Obj>
 bool CGAME::isValidDistance(Obj*& obj1, Obj*& obj2) {
-	return abs(obj1->getX() - obj2->getX()) >= OBJECT_GAP;
+	return abs(obj1->getX() - obj2->getX()) >= OBJECT_GAP + obj1->getWidth();
 }
 
 void CGAME::updatePosPeople() {
@@ -40,6 +41,11 @@ void CGAME::updatePosPeople() {
 	if (CCONSOLE::isPressed('S')) player.goDown();
 	if (CCONSOLE::isPressed('A')) player.goLeft();
 	if (CCONSOLE::isPressed('D')) player.goRight();
+}
+
+void CGAME::updatePosVehicle() {
+	updatePosObject(carsVect);
+	updatePosObject(busesVect);
 }
 
 template<class Obj>
