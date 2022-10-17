@@ -5,7 +5,7 @@
 class CVEHICLE {
 protected:
 	int x, y, width, height;
-	bool isMoving;
+	bool isMoving, isInRedLight;
 
 public:
 	CVEHICLE() = default;
@@ -20,4 +20,7 @@ public:
 
 	void setMove(bool flag);
 	bool canMove();
+
+	void setRedLight(bool flag);
+	bool isRedLight();
 };

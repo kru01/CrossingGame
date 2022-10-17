@@ -17,5 +17,5 @@ void CBUS::move() {
 	}
 
 	CCONSOLE::eraseGraphics({ x + BUS_WIDTH - 1, y }, { x + BUS_WIDTH + fieldConstraints::HOR_SPEED, y + BUS_HEIGHT });
-	CCONSOLE::drawGraphics("assets/objects/bus.txt", { x, y }, BUS_COLOR);
+	CCONSOLE::drawGraphics(BUS_SPRITE, { x, y }, BUS_COLOR);
 }

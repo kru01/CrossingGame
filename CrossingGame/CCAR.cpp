@@ -7,6 +7,11 @@ CCAR::CCAR(int x, int y) : CVEHICLE(x, y) {
 }
 
 void CCAR::move() {
+	if (isInRedLight) {
+		CCONSOLE::drawGraphics(CAR_SPRITE, { x, y }, CAR_COLOR);
+		return;
+	}
+
 	x += fieldConstraints::HOR_SPEED;
 
 	if (x >= fieldConstraints::BOUND_RIGHT - CAR_WIDTH) {
@@ -17,5 +22,5 @@ void CCAR::move() {
 	}
 
 	CCONSOLE::eraseGraphics({ x - fieldConstraints::HOR_SPEED, y }, { x, y + CAR_HEIGHT });
-	CCONSOLE::drawGraphics("assets/objects/car.txt", { x, y }, CAR_COLOR);
+	CCONSOLE::drawGraphics(CAR_SPRITE, { x, y }, CAR_COLOR);
 }

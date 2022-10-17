@@ -3,31 +3,20 @@
 
 CGAME::CGAME() {
 	player = CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
-	
+
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
 		carsVect.push_back(new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y));
-		busesVect.push_back(new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y)); 
+		busesVect.push_back(new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y));
 	}
 
+	tfLightCars = CTRAFFICLIGHT(20, 10);
 	level = 1;
 }
 
-void CGAME::initGame() {
-	system("cls");
-	CCONSOLE::drawGraphics("assets/gameInterfaces/playfield.txt", { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, FIELD_COLOR);
-}
-
-void CGAME::runGame() {
-	srand(time(NULL));
-
-	while (1) {
-		if (!player.isDead()) {
-			CCONSOLE::drawGraphics("assets/objects/human.txt", { player.getX(), player.getY() }, HUMAN_COLOR);
-			updatePosPeople();
-		}
-
-		updatePosVehicle();
-		Sleep(300);
+CGAME::~CGAME() {
+	for (int i = 0; i < OBJECT_LIMIT; i++) {
+		delete carsVect[i], carsVect[i] = nullptr;
+		delete busesVect[i], busesVect[i] = nullptr;
 	}
 }
 
@@ -65,5 +54,24 @@ void CGAME::updatePosObject(vector<Obj*>& objVect) {
 						break;
 					}
 				} else objVect[i]->setMove(true);
+	}
+}
+
+void CGAME::initGame() {
+	system("cls");
+	CCONSOLE::drawGraphics(FIELD_SPRITE, { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, FIELD_COLOR);
+}
+
+void CGAME::runGame() {
+	while (1) {
+		tfLightCars.updateLightStatus(carsVect, vehicles::CAR);
+		
+		if (!player.isDead()) {
+			CCONSOLE::drawGraphics(HUMAN_SPRITE, { player.getX(), player.getY() }, HUMAN_COLOR);
+			updatePosPeople();
+		}
+
+		updatePosVehicle();
+		Sleep(300);
 	}
 }

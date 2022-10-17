@@ -45,6 +45,9 @@
     <ClCompile Include="CBUS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CTRAFFICLIGHT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPEOPLE.h">
@@ -71,6 +74,9 @@
     <ClInclude Include="CBUS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CTRAFFICLIGHT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt">
@@ -83,6 +89,15 @@
       <Filter>Resource Files\objects</Filter>
     </Text>
     <Text Include="assets\objects\bus.txt">
+      <Filter>Resource Files\objects</Filter>
+    </Text>
+    <Text Include="assets\objects\cat.txt">
+      <Filter>Resource Files\objects</Filter>
+    </Text>
+    <Text Include="assets\objects\rabbit.txt">
+      <Filter>Resource Files\objects</Filter>
+    </Text>
+    <Text Include="assets\objects\trafficLight.txt">
       <Filter>Resource Files\objects</Filter>
     </Text>
   </ItemGroup>

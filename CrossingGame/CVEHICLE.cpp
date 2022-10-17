@@ -6,6 +6,7 @@ CVEHICLE::CVEHICLE(int x, int y) {
 	this->y = y;
 	this->width = this->height = 0;
 	this->isMoving = false;
+	this->isInRedLight = false;
 }
 
 int CVEHICLE::getX() {
@@ -30,4 +31,12 @@ void CVEHICLE::setMove(bool flag) {
 
 bool CVEHICLE::canMove() {
 	return isMoving;
+}
+
+void CVEHICLE::setRedLight(bool flag) {
+	isInRedLight = flag;
+}
+
+bool CVEHICLE::isRedLight() {
+	return isInRedLight;
 }

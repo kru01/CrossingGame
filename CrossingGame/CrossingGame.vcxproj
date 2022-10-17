@@ -133,6 +133,7 @@
     <ClCompile Include="CCONSOLE.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
+    <ClCompile Include="CTRAFFICLIGHT.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -144,13 +145,17 @@
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CBUS.h" />
+    <ClInclude Include="CTRAFFICLIGHT.h" />
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt" />
     <Text Include="assets\objects\bus.txt" />
     <Text Include="assets\objects\car.txt" />
+    <Text Include="assets\objects\cat.txt" />
     <Text Include="assets\objects\human.txt" />
+    <Text Include="assets\objects\rabbit.txt" />
+    <Text Include="assets\objects\trafficLight.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

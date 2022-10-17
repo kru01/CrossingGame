@@ -39,3 +39,8 @@ enum colors : int {
 	LIGHT_YELLOW,
 	BRIGHT_WHITE
 };
+
+enum vehicles : int {
+	CAR,
+	BUS
+};
