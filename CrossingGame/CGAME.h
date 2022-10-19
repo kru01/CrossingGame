@@ -21,6 +21,7 @@ class CGAME {
 	vector<CCAT*> catsVect;
 
 	CTRAFFICLIGHT tfLightCars;
+	CTRAFFICLIGHT tfLightBuses;
 
 	int level;
 

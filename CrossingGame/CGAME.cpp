@@ -12,6 +12,7 @@ CGAME::CGAME() {
 	}
 
 	tfLightCars = CTRAFFICLIGHT(20, 10);
+	tfLightBuses = CTRAFFICLIGHT(15, 10);
 	level = 1;
 }
 
@@ -74,6 +75,7 @@ void CGAME::initGame() {
 void CGAME::runGame() {
 	while (1) {
 		tfLightCars.updateLightStatus(carsVect, vehicles::CAR);
+		tfLightBuses.updateLightStatus(busesVect, vehicles::BUS);
 		
 		if (!player.isDead()) {
 			CCONSOLE::drawGraphics(HUMAN_SPRITE, { player.getX(), player.getY() }, HUMAN_COLOR);

@@ -7,6 +7,11 @@ CBUS::CBUS(int x, int y) : CVEHICLE(x, y) {
 }
 
 void CBUS::move() {
+	if (isInRedLight) {
+		CCONSOLE::drawGraphics(BUS_SPRITE, { x , y }, BUS_COLOR);
+		return;
+	}
+
 	x -= fieldConstraints::HOR_SPEED;
 
 	if (x <= fieldConstraints::BOUND_LEFT) {
