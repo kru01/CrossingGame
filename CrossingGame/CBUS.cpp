@@ -3,7 +3,7 @@
 
 CBUS::CBUS(int x, int y) : CVEHICLE(x, y) {
 	this->width = BUS_WIDTH;
-	this->height = BUS_WIDTH;
+	this->height = BUS_HEIGHT;
 }
 
 void CBUS::move() {

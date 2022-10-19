@@ -29,6 +29,7 @@ class CGAME {
 
 	void updatePosPeople();
 	void updatePosVehicle();
+	void updatePosAnimal();
 	template<class Obj>
 	void updatePosObject(vector<Obj*>& objVect);
 

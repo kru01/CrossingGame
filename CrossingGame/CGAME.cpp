@@ -39,6 +39,9 @@ void CGAME::updatePosPeople() {
 void CGAME::updatePosVehicle() {
 	updatePosObject(carsVect);
 	updatePosObject(busesVect);
+}
+
+void CGAME::updatePosAnimal() {
 	updatePosObject(rabbitsVect);
 	updatePosObject(catsVect);
 }
@@ -78,6 +81,12 @@ void CGAME::runGame() {
 		}
 
 		updatePosVehicle();
+		updatePosAnimal();
+
+		if (player.isDead()) {
+			return;
+		}
+
 		Sleep(300);
 	}
 }

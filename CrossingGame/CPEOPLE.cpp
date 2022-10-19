@@ -36,17 +36,17 @@ void CPEOPLE::goRight() {
 }
 
 bool CPEOPLE::isImpact(CVEHICLE* obj) {
-	return x >= obj->getX() - 1 && x <= obj->getX() - 1 + obj->getWidth()
+	return x >= obj->getX() - HUMAN_WIDTH && x <= obj->getX() + obj->getWidth()
 		&& y >= obj->getY() && y <= obj->getY() + obj->getHeight();
 }
 
 bool CPEOPLE::isImpact(CANIMAL* obj) {
-	return x >= obj->getX() - 1 && x <= obj->getX() - 1 + obj->getWidth()
+	return x >= obj->getX() - HUMAN_WIDTH && x <= obj->getX() + obj->getWidth()
 		&& y >= obj->getY() && y <= obj->getY() + obj->getHeight();
 }
 
 void CPEOPLE::setDead(bool flag) {
-	isAlive = flag;
+	isAlive = !flag;
 }
 
 bool CPEOPLE::isDead() {
