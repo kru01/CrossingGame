@@ -5,6 +5,8 @@
 #include "CPEOPLE.h"
 #include "CCAR.h"
 #include "CBUS.h"
+#include "CRABBIT.h"
+#include "CCAT.h"
 #include "CTRAFFICLIGHT.h"
 
 const string FIELD_SPRITE = "assets/gameInterfaces/playfield.txt";
@@ -15,6 +17,8 @@ class CGAME {
 	CPEOPLE player;
 	vector<CCAR*> carsVect;
 	vector<CBUS*> busesVect;
+	vector<CRABBIT*> rabbitsVect;
+	vector<CCAT*> catsVect;
 
 	CTRAFFICLIGHT tfLightCars;
 

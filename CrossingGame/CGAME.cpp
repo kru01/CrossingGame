@@ -7,6 +7,8 @@ CGAME::CGAME() {
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
 		carsVect.push_back(new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y));
 		busesVect.push_back(new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y));
+		rabbitsVect.push_back(new CRABBIT(RABBIT_SPAWN_COORD.x, RABBIT_SPAWN_COORD.y));
+		catsVect.push_back(new CCAT(CAT_SPAWN_COORD.x, CAT_SPAWN_COORD.y));
 	}
 
 	tfLightCars = CTRAFFICLIGHT(20, 10);
@@ -17,6 +19,8 @@ CGAME::~CGAME() {
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
 		delete carsVect[i], carsVect[i] = nullptr;
 		delete busesVect[i], busesVect[i] = nullptr;
+		delete rabbitsVect[i], rabbitsVect[i] = nullptr;
+		delete catsVect[i], catsVect[i] = nullptr;
 	}
 }
 
@@ -35,6 +39,8 @@ void CGAME::updatePosPeople() {
 void CGAME::updatePosVehicle() {
 	updatePosObject(carsVect);
 	updatePosObject(busesVect);
+	updatePosObject(rabbitsVect);
+	updatePosObject(catsVect);
 }
 
 template<class Obj>

@@ -48,6 +48,12 @@
     <ClCompile Include="CTRAFFICLIGHT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CRABBIT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CCAT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPEOPLE.h">
@@ -75,6 +81,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CTRAFFICLIGHT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRABBIT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CCAT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

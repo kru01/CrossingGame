@@ -130,9 +130,11 @@
     <ClCompile Include="CANIMAL.cpp" />
     <ClCompile Include="CBUS.cpp" />
     <ClCompile Include="CCAR.cpp" />
+    <ClCompile Include="CCAT.cpp" />
     <ClCompile Include="CCONSOLE.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
+    <ClCompile Include="CRABBIT.cpp" />
     <ClCompile Include="CTRAFFICLIGHT.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
     <ClCompile Include="main.cpp" />
@@ -140,11 +142,13 @@
   <ItemGroup>
     <ClInclude Include="CANIMAL.h" />
     <ClInclude Include="CCAR.h" />
+    <ClInclude Include="CCAT.h" />
     <ClInclude Include="CCONSOLE.h" />
     <ClInclude Include="CCONSTANT.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CBUS.h" />
+    <ClInclude Include="CRABBIT.h" />
     <ClInclude Include="CTRAFFICLIGHT.h" />
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>
