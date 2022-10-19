@@ -1,7 +1,7 @@
 #pragma once
 #include "CRABBIT.h"
 
-CRABBIT::CRABBIT(int x, int y) : CVEHICLE(x, y) {
+CRABBIT::CRABBIT(int x, int y) : CANIMAL(x, y) {
 	this->width = RABBIT_WIDTH;
 	this->height = RABBIT_HEIGHT;
 }

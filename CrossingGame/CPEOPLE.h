@@ -2,6 +2,7 @@
 #include "CCONSOLE.h"
 #include "CCONSTANT.h"
 #include "CVEHICLE.h"
+#include "CANIMAL.h"
 
 const string HUMAN_SPRITE = "assets/objects/human.txt";
 const int HUMAN_WIDTH = 4, HUMAN_HEIGHT = 3;
@@ -22,6 +23,7 @@ public:
 	void goRight();
 
 	bool isImpact(CVEHICLE* obj);
+	bool isImpact(CANIMAL* obj);
 
 	void setDead(bool flag);
 	bool isDead();

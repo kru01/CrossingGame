@@ -1,7 +1,7 @@
 #pragma once
 #include "CCAT.h"
 
-CCAT::CCAT(int x, int y) : CVEHICLE(x, y) {
+CCAT::CCAT(int x, int y) : CANIMAL(x, y) {
 	this->width = CAT_WIDTH;
 	this->height = CAT_WIDTH;
 }
