@@ -1,4 +1,3 @@
-#pragma once
 #include "CVEHICLE.h"
 
 CVEHICLE::CVEHICLE(int x, int y) {

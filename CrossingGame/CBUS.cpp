@@ -1,4 +1,3 @@
-#pragma once
 #include "CBUS.h"
 
 CBUS::CBUS(int x, int y) : CVEHICLE(x, y) {
@@ -14,7 +13,7 @@ void CBUS::move() {
 
 	x -= fieldConstraints::HOR_SPEED;
 
-	if (x <= fieldConstraints::BOUND_LEFT) {
+	if (x <= fieldConstraints::BOUND_LEFT + TFLIGHT_WIDTH) {
 		CCONSOLE::eraseGraphics({ x, y }, { x + BUS_WIDTH + fieldConstraints::HOR_SPEED, y + BUS_HEIGHT });
 		isMoving = false;
 		x = BUS_SPAWN_COORD.x;

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <thread>
 #include "CCONSOLE.h"
 #include "CCONSTANT.h"
 #include "CPEOPLE.h"
@@ -8,6 +9,7 @@
 #include "CRABBIT.h"
 #include "CCAT.h"
 #include "CTRAFFICLIGHT.h"
+#include "CENDSCREEN.h"
 
 const string FIELD_SPRITE = "assets/gameInterfaces/playfield.txt";
 const int FIELD_COLOR = colors::BLACK;
@@ -22,8 +24,10 @@ class CGAME {
 
 	CTRAFFICLIGHT tfLightCars;
 	CTRAFFICLIGHT tfLightBuses;
+	CENDSCREEN* endScreen;
 
 	int level;
+	bool isInProgress;
 
 	template<class Obj>
 	bool isValidDistance(Obj*& obj1, Obj*& obj2);
@@ -34,10 +38,17 @@ class CGAME {
 	template<class Obj>
 	void updatePosObject(vector<Obj*>& objVect);
 
+	void runGameOver();
+	void renewObjects();
+
 public:
-	CGAME();
+	CGAME(CENDSCREEN* endScreen);
 	~CGAME();
 
-	static void initGame();
+	static void initGameGraphics();
 	void runGame();
+	void resetGame();
+	void terminateGame(thread& gameRunner);
+
+	bool isRunning();
 };

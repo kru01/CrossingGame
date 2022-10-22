@@ -1,4 +1,3 @@
-#pragma once
 #include "CANIMAL.h"
 
 CANIMAL::CANIMAL(int x, int y) {

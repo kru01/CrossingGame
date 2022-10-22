@@ -1,4 +1,3 @@
-#pragma once
 #include "CRABBIT.h"
 
 CRABBIT::CRABBIT(int x, int y) : CANIMAL(x, y) {

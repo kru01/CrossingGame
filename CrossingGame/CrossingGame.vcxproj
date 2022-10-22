@@ -132,6 +132,7 @@
     <ClCompile Include="CCAR.cpp" />
     <ClCompile Include="CCAT.cpp" />
     <ClCompile Include="CCONSOLE.cpp" />
+    <ClCompile Include="CENDSCREEN.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
     <ClCompile Include="CRABBIT.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="CCAT.h" />
     <ClInclude Include="CCONSOLE.h" />
     <ClInclude Include="CCONSTANT.h" />
+    <ClInclude Include="CENDSCREEN.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CBUS.h" />
@@ -153,7 +155,9 @@
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="assets\gameInterfaces\gameOver.txt" />
     <Text Include="assets\gameInterfaces\playfield.txt" />
+    <Text Include="assets\gameInterfaces\gameWin.txt" />
     <Text Include="assets\objects\bus.txt" />
     <Text Include="assets\objects\car.txt" />
     <Text Include="assets\objects\cat.txt" />

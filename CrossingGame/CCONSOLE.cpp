@@ -1,10 +1,11 @@
-#pragma once
 #include "CCONSOLE.h"
 
-void CCONSOLE::resizeConsole(int width, int height) {
-	RECT rec;
-	GetWindowRect(CONSOLE_WINDOW, &rec);
-	MoveWindow(CONSOLE_WINDOW, rec.left, rec.top, width, height, true);
+void CCONSOLE::resizeAndCenterConsole(int width, int height) {
+	RECT rectWindow;
+	GetWindowRect(CONSOLE_WINDOW, &rectWindow);
+	int posX = GetSystemMetrics(SM_CXSCREEN) / 2 - width / 2;
+	int posY = GetSystemMetrics(SM_CYSCREEN) / 2 - height / 2;
+	MoveWindow(CONSOLE_WINDOW, posX, posY, width, height, true);
 }
 
 void CCONSOLE::fixConsoleWindow() {
@@ -15,18 +16,8 @@ void CCONSOLE::fixConsoleWindow() {
 
 void CCONSOLE::disableQuickEditMode() {
 	DWORD prevMode;
-	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
-	GetConsoleMode(hInput, &prevMode);
-	SetConsoleMode(hInput, ENABLE_EXTENDED_FLAGS | (prevMode & ~ENABLE_QUICK_EDIT_MODE));
-}
-
-void CCONSOLE::centerConsole() {
-	RECT rectClient, rectWindow;
-	GetClientRect(CONSOLE_WINDOW, &rectClient);
-	GetWindowRect(CONSOLE_WINDOW, &rectWindow);
-	int posX = GetSystemMetrics(SM_CXSCREEN) / 2 - (rectWindow.right - rectWindow.left) / 2;
-	int posY = GetSystemMetrics(SM_CYSCREEN) / 2 - (rectWindow.bottom - rectWindow.top) / 2;
-	MoveWindow(CONSOLE_WINDOW, posX, posY, rectClient.right - rectClient.left, rectClient.bottom - rectClient.top, true);
+	GetConsoleMode(CONSOLE_STD_INPUT, &prevMode);
+	SetConsoleMode(CONSOLE_STD_INPUT, ENABLE_EXTENDED_FLAGS | (prevMode & ~ENABLE_QUICK_EDIT_MODE));
 }
 
 void CCONSOLE::showConsoleCursor(bool flag) {
@@ -37,8 +28,8 @@ void CCONSOLE::showConsoleCursor(bool flag) {
 }
 
 void CCONSOLE::initConsoleWindow() {
-	resizeConsole(1400, 800);
-	centerConsole();
+	// resizeAndCenterConsole is called in resizeCenterAndGetConsoleRowsCols
+	// This is lowkey stupid but it's the only way to init CONSOLE_WIDTH and CONSOLE_HEIGHT at runtime
 	fixConsoleWindow();
 	system("color 70");
 	SetConsoleOutputCP(65001);
@@ -47,16 +38,33 @@ void CCONSOLE::initConsoleWindow() {
 	showConsoleCursor(false);
 }
 
+int CCONSOLE::resizeCenterAndGetConsoleRowsCols(bool getRows) {
+	resizeAndCenterConsole(CONSOLE_WIDTH_PX, CONSOLE_HEIGHT_PX);
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &csbi);
+	if (getRows) return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+	return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+}
+
 void CCONSOLE::goToXY(int x, int y) {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(CONSOLE_STD_OUTPUT, coord);
 }
 
 short CCONSOLE::isPressed(int nVirtKey) {
+	// GetAsyncKeyState will leave keys in the buffer
+	// Try FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE)); if you encounter weird input behaviors
 	return GetAsyncKeyState(nVirtKey) & 0x01;
 }
 
-void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int sleepTime) {
+void CCONSOLE::drawTexts(string text, POINT coord, int color, int background) {
+	goToXY(coord.x, coord.y);
+	setColor(color, background);
+	cout << text;
+}
+
+void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int background, int sleepTime) {
 	ifstream infile(fileName);
 
 	if (!infile.good()) {
@@ -64,12 +72,12 @@ void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int sleepTi
 		return;
 	}
 
-	setColor(color);
 	string buffer;
 
 	while (getline(infile, buffer)) {
 		Sleep(sleepTime);
 		goToXY(coord.x, coord.y);
+		setColor(color, background);
 		cout << buffer;
 		coord.y++;
 	}
@@ -77,8 +85,8 @@ void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int sleepTi
 	infile.close();
 }
 
-void CCONSOLE::eraseGraphics(POINT start, POINT end, int color) {
-	setColor(color);
+void CCONSOLE::eraseGraphics(POINT start, POINT end, int background) {
+	setColor(background, background);
 	string eraser(end.x - start.x, ' ');
 	for (int i = start.y; i < end.y; i++) {
 		goToXY(start.x, i);
@@ -88,4 +96,9 @@ void CCONSOLE::eraseGraphics(POINT start, POINT end, int color) {
 
 void CCONSOLE::setColor(int text, int background) {
 	SetConsoleTextAttribute(CONSOLE_STD_OUTPUT, background * 16 + text);
+}
+
+void CCONSOLE::clearScreen() {
+	setColor(CONSOLE_TXT_COLOR, CONSOLE_BG_COLOR);
+	system("cls");
 }

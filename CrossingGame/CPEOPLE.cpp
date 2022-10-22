@@ -1,4 +1,3 @@
-#pragma once
 #include "CPEOPLE.h"
 
 CPEOPLE::CPEOPLE(int x, int y) {
@@ -22,14 +21,14 @@ void CPEOPLE::goDown() {
 }
 
 void CPEOPLE::goLeft() {
-	if (x <= fieldConstraints::BOUND_LEFT) return;
+	if (x <= fieldConstraints::BOUND_LEFT + TFLIGHT_WIDTH) return;
 	CCONSOLE::eraseGraphics({ x, y }, { x + HUMAN_WIDTH, y + HUMAN_HEIGHT });
 	x -= fieldConstraints::HOR_SPEED;
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { x, y }, HUMAN_COLOR);
 }
 
 void CPEOPLE::goRight() {
-	if (x >= fieldConstraints::BOUND_RIGHT - HUMAN_WIDTH) return;
+	if (x >= fieldConstraints::BOUND_RIGHT - HUMAN_WIDTH - TFLIGHT_WIDTH) return;
 	CCONSOLE::eraseGraphics({ x, y }, { x + HUMAN_WIDTH, y + HUMAN_HEIGHT });
 	x += fieldConstraints::HOR_SPEED;
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { x, y },HUMAN_COLOR);

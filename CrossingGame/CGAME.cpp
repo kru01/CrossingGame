@@ -1,7 +1,6 @@
-#pragma once
 #include "CGAME.h"
 
-CGAME::CGAME() {
+CGAME::CGAME(CENDSCREEN* endScreen) {
 	player = CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
@@ -13,7 +12,10 @@ CGAME::CGAME() {
 
 	tfLightCars = CTRAFFICLIGHT(20, 10);
 	tfLightBuses = CTRAFFICLIGHT(15, 10);
+	this->endScreen = endScreen;
+
 	level = 1;
+	isInProgress = true;
 }
 
 CGAME::~CGAME() {
@@ -23,6 +25,8 @@ CGAME::~CGAME() {
 		delete rabbitsVect[i], rabbitsVect[i] = nullptr;
 		delete catsVect[i], catsVect[i] = nullptr;
 	}
+
+	endScreen = nullptr;
 }
 
 template<class Obj>
@@ -67,13 +71,37 @@ void CGAME::updatePosObject(vector<Obj*>& objVect) {
 	}
 }
 
-void CGAME::initGame() {
-	system("cls");
+void CGAME::runGameOver() {
+	CCONSOLE::clearScreen();
+	isInProgress = false;
+	endScreen->runEndScreen(true);
+}
+
+void CGAME::renewObjects() {
+	for (int i = 0; i < OBJECT_LIMIT; i++) {
+		delete carsVect[i];
+		carsVect[i] = new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y);
+
+		delete busesVect[i];
+		busesVect[i] = new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y);
+
+		delete rabbitsVect[i];
+		rabbitsVect[i] = new CRABBIT(RABBIT_SPAWN_COORD.x, RABBIT_SPAWN_COORD.y);
+
+		delete catsVect[i];
+		catsVect[i] = new CCAT(CAT_SPAWN_COORD.x, CAT_SPAWN_COORD.y);
+	}
+
+	player = CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
+}
+
+void CGAME::initGameGraphics() {
+	CCONSOLE::clearScreen();
 	CCONSOLE::drawGraphics(FIELD_SPRITE, { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, FIELD_COLOR);
 }
 
 void CGAME::runGame() {
-	while (1) {
+	while (isInProgress) {
 		tfLightCars.updateLightStatus(carsVect, vehicles::CAR);
 		tfLightBuses.updateLightStatus(busesVect, vehicles::BUS);
 		
@@ -86,9 +114,27 @@ void CGAME::runGame() {
 		updatePosAnimal();
 
 		if (player.isDead()) {
+			runGameOver();
 			return;
 		}
 
 		Sleep(300);
 	}
+}
+
+void CGAME::resetGame() {
+	renewObjects();
+	level = 1;
+	initGameGraphics();
+	isInProgress = true;
+}
+
+void CGAME::terminateGame(thread& gameRunner) {
+	CCONSOLE::clearScreen();
+	isInProgress = false;
+	gameRunner.join();
+}
+
+bool CGAME::isRunning() {
+	return isInProgress;
 }

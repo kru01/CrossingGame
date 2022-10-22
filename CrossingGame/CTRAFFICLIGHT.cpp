@@ -1,4 +1,3 @@
-#pragma once
 #include "CTRAFFICLIGHT.h"
 
 CTRAFFICLIGHT::CTRAFFICLIGHT(int greenTime, int redTime) {

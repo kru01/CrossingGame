@@ -3,6 +3,7 @@
 #include "CCONSTANT.h"
 #include "CVEHICLE.h"
 #include "CANIMAL.h"
+#include "CTRAFFICLIGHT.h"
 
 const string HUMAN_SPRITE = "assets/objects/human.txt";
 const int HUMAN_WIDTH = 3, HUMAN_HEIGHT = 3;

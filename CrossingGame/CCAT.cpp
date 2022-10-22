@@ -1,4 +1,3 @@
-#pragma once
 #include "CCAT.h"
 
 CCAT::CCAT(int x, int y) : CANIMAL(x, y) {

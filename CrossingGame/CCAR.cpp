@@ -1,4 +1,3 @@
-#pragma once
 #include "CCAR.h"
 
 CCAR::CCAR(int x, int y) : CVEHICLE(x, y) {
@@ -14,7 +13,7 @@ void CCAR::move() {
 
 	x += fieldConstraints::HOR_SPEED;
 
-	if (x >= fieldConstraints::BOUND_RIGHT - CAR_WIDTH) {
+	if (x >= fieldConstraints::BOUND_RIGHT - CAR_WIDTH - TFLIGHT_WIDTH) {
 		CCONSOLE::eraseGraphics({ x - fieldConstraints::HOR_SPEED, y }, { x + CAR_WIDTH, y + CAR_HEIGHT });
 		isMoving = false;
 		x = CAR_SPAWN_COORD.x;

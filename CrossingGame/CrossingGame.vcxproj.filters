@@ -54,6 +54,9 @@
     <ClCompile Include="CCAT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CENDSCREEN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPEOPLE.h">
@@ -89,6 +92,9 @@
     <ClInclude Include="CCAT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CENDSCREEN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt">
@@ -111,6 +117,12 @@
     </Text>
     <Text Include="assets\objects\trafficLight.txt">
       <Filter>Resource Files\objects</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\gameOver.txt">
+      <Filter>Resource Files\gameInterfaces</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\gameWin.txt">
+      <Filter>Resource Files\gameInterfaces</Filter>
     </Text>
   </ItemGroup>
 </Project>
