@@ -1,7 +1,7 @@
 #include "CGAME.h"
 
 CGAME::CGAME(CENDSCREEN* endScreen) {
-	player = CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
+	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 
 	for (int i = 0; i < OBJECT_LIMIT; i++) {
 		carsVect.push_back(new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y));
@@ -26,6 +26,10 @@ CGAME::~CGAME() {
 		delete catsVect[i], catsVect[i] = nullptr;
 	}
 
+	for (int i = 0; i < humansVect.size(); i++)
+		delete humansVect[i], humansVect[i] = nullptr;
+
+	delete player, player = nullptr;
 	endScreen = nullptr;
 }
 
@@ -35,10 +39,10 @@ bool CGAME::isValidDistance(Obj*& obj1, Obj*& obj2) {
 }
 
 void CGAME::updatePosPeople() {
-	if (CCONSOLE::isPressed('W')) player.goUp();
-	if (CCONSOLE::isPressed('S')) player.goDown();
-	if (CCONSOLE::isPressed('A')) player.goLeft();
-	if (CCONSOLE::isPressed('D')) player.goRight();
+	if (CCONSOLE::isPressedAsync('W') || CCONSOLE::isPressedAsync(VK_UP)) player->goUp();
+	if (CCONSOLE::isPressedAsync('S') || CCONSOLE::isPressedAsync(VK_DOWN)) player->goDown();
+	if (CCONSOLE::isPressedAsync('A') || CCONSOLE::isPressedAsync(VK_LEFT)) player->goLeft();
+	if (CCONSOLE::isPressedAsync('D') || CCONSOLE::isPressedAsync(VK_RIGHT)) player->goRight();
 }
 
 void CGAME::updatePosVehicle() {
@@ -56,7 +60,7 @@ void CGAME::updatePosObject(vector<Obj*>& objVect) {
 	for (int i = 0; i < objVect.size(); i++) {
 		if (objVect[i]->canMove()) {
 			objVect[i]->move();
-			if (player.isImpact(objVect[i])) player.setDead(true);
+			if (player->isImpact(objVect[i])) player->setDead(true);
 			continue;
 		}
 
@@ -71,10 +75,59 @@ void CGAME::updatePosObject(vector<Obj*>& objVect) {
 	}
 }
 
+bool CGAME::checkImpactPeopleAndDrawEffect() {
+	bool impacted = false;
+
+	for (auto& human : humansVect)
+		if (player->isImpact(human)) {
+			impacted = true;
+			impactPeopleEffect(human, 250);
+		}
+
+	return impacted;
+}
+
+void CGAME::impactPeopleEffect(CPEOPLE*& victim, int effectTime) {
+	player->setY(player->getY() + fieldConstraints::VER_SPEED);
+	CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
+
+	for (auto& human : humansVect)
+		CCONSOLE::drawGraphics(HUMAN_SPRITE, { human->getX(), human->getY() }, (human != victim ? HUMAN_COLOR : HUMAN_HIT_COLOR));
+
+	const int remarkPos = CCONSOLE::getRandInt(0, HUMAN_REMARKS.size() - 1);
+	CCONSOLE::drawTexts(HUMAN_REMARKS[remarkPos], { victim->getX(), victim->getY() - REMARKS_OFFSET }, HUMAN_HIT_COLOR);
+	Sleep(effectTime);
+	CCONSOLE::drawGraphics(HUMAN_SPRITE, { victim->getX(), victim->getY() }, HUMAN_COLOR);
+	CCONSOLE::eraseTexts({ victim->getX(), victim->getY() - REMARKS_OFFSET }, HUMAN_REMARKS[remarkPos].length());
+}
+
+bool CGAME::advanceLevel() {
+	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
+	CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
+	
+	if (level == 5) {
+		player->setDead(true);
+		runGameWon();
+		return false;
+	}
+	
+	level++;
+	string levelText = "level ";
+	levelText.push_back(level + 48);
+	CCONSOLE::drawTexts(levelText, { fieldConstraints::F_RIGHT + 10, fieldConstraints::F_TOP - 5 }, colors::BLACK);
+	return true;
+}
+
 void CGAME::runGameOver() {
 	CCONSOLE::clearScreen();
 	isInProgress = false;
 	endScreen->runEndScreen(true);
+}
+
+void CGAME::runGameWon() {
+	CCONSOLE::clearScreen();
+	isInProgress = false;
+	endScreen->runEndScreen(false);
 }
 
 void CGAME::renewObjects() {
@@ -92,12 +145,18 @@ void CGAME::renewObjects() {
 		catsVect[i] = new CCAT(CAT_SPAWN_COORD.x, CAT_SPAWN_COORD.y);
 	}
 
-	player = CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
+	for (int i = 0; i < humansVect.size(); i++)
+		delete humansVect[i], humansVect[i] = nullptr;
+
+	humansVect.clear();
+	delete player;
+	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 }
 
 void CGAME::initGameGraphics() {
 	CCONSOLE::clearScreen();
 	CCONSOLE::drawGraphics(FIELD_SPRITE, { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, FIELD_COLOR);
+	CCONSOLE::drawTexts("level 1", {fieldConstraints::F_RIGHT + 10, fieldConstraints::F_TOP - 5}, colors::BLACK);
 }
 
 void CGAME::runGame() {
@@ -105,18 +164,25 @@ void CGAME::runGame() {
 		tfLightCars.updateLightStatus(carsVect, vehicles::CAR);
 		tfLightBuses.updateLightStatus(busesVect, vehicles::BUS);
 		
-		if (!player.isDead()) {
-			CCONSOLE::drawGraphics(HUMAN_SPRITE, { player.getX(), player.getY() }, HUMAN_COLOR);
+		if (!player->isDead()) {
+			CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
 			updatePosPeople();
 		}
 
 		updatePosVehicle();
 		updatePosAnimal();
 
-		if (player.isDead()) {
+		if (player->isDead()) {
 			runGameOver();
 			return;
 		}
+
+		if (player->isAtFinishLine())
+			if (!checkImpactPeopleAndDrawEffect()) {
+				for (auto& human : humansVect) CCONSOLE::drawGraphics(HUMAN_SPRITE, { human->getX(), human->getY() }, HUMAN_COLOR);
+				humansVect.push_back(player);
+				if (!advanceLevel()) return;
+			}
 
 		Sleep(300);
 	}

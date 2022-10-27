@@ -13,10 +13,11 @@
 
 const string FIELD_SPRITE = "assets/gameInterfaces/playfield.txt";
 const int FIELD_COLOR = colors::BLACK;
-const int OBJECT_LIMIT = 5, OBJECT_GAP = 15;
+const int OBJECT_LIMIT = 5, OBJECT_GAP = 20;
 
 class CGAME {
-	CPEOPLE player;
+	CPEOPLE* player;
+	vector<CPEOPLE*> humansVect;
 	vector<CCAR*> carsVect;
 	vector<CBUS*> busesVect;
 	vector<CRABBIT*> rabbitsVect;
@@ -38,7 +39,12 @@ class CGAME {
 	template<class Obj>
 	void updatePosObject(vector<Obj*>& objVect);
 
+	bool checkImpactPeopleAndDrawEffect();
+	void impactPeopleEffect(CPEOPLE*& victim, int effectTime);
+
+	bool advanceLevel();
 	void runGameOver();
+	void runGameWon();
 	void renewObjects();
 
 public:

@@ -31,6 +31,7 @@ void CENDSCREEN::handleInput() {
 
 	while (true) {
 		key = toupper(_getch());
+		key = CCONSOLE::getChArrowKeyPressed(key);
 
 		switch (key) {
 		case 'W':

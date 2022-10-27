@@ -52,16 +52,42 @@ void CCONSOLE::goToXY(int x, int y) {
 	SetConsoleCursorPosition(CONSOLE_STD_OUTPUT, coord);
 }
 
-short CCONSOLE::isPressed(int nVirtKey) {
+int CCONSOLE::getRandInt(const int min, const int max) {
+	static thread_local random_device rd;
+	static thread_local mt19937 generator(rd());
+	uniform_int_distribution<int> distInt(min, max);
+	return distInt(generator);
+}
+
+short CCONSOLE::isPressedAsync(int nVirtKey) {
 	// GetAsyncKeyState will leave keys in the buffer
 	// Try FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE)); if you encounter weird input behaviors
 	return GetAsyncKeyState(nVirtKey) & 0x01;
+}
+
+int CCONSOLE::getChArrowKeyPressed(int key) {
+	if (key != arrowKeys::NUMLOCK_ENABLED && key != arrowKeys::NUMLOCK_DISABLED) return key;
+	key = _getch();
+	switch (key) {
+	case arrowKeys::ARROW_UP: return 'W';
+	case arrowKeys::ARROW_DOWN: return 'S';
+	case arrowKeys::ARROW_LEFT: return 'A';
+	case arrowKeys::ARROW_RIGHT: return 'D';
+	}
+	return key;
 }
 
 void CCONSOLE::drawTexts(string text, POINT coord, int color, int background) {
 	goToXY(coord.x, coord.y);
 	setColor(color, background);
 	cout << text;
+}
+
+void CCONSOLE::eraseTexts(POINT coord, int txtLength, int background) {
+	string eraser(txtLength, ' ');
+	goToXY(coord.x, coord.y);
+	setColor(background, background);
+	cout << eraser;
 }
 
 void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int background, int sleepTime) {
@@ -73,11 +99,11 @@ void CCONSOLE::drawGraphics(string fileName, POINT coord, int color, int backgro
 	}
 
 	string buffer;
+	setColor(color, background);
 
 	while (getline(infile, buffer)) {
 		Sleep(sleepTime);
 		goToXY(coord.x, coord.y);
-		setColor(color, background);
 		cout << buffer;
 		coord.y++;
 	}

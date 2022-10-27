@@ -44,3 +44,12 @@ enum vehicles : int {
 	CAR,
 	BUS
 };
+
+enum arrowKeys : int {
+	NUMLOCK_ENABLED = 0,
+	NUMLOCK_DISABLED = 224,
+	ARROW_UP = 72,
+	ARROW_DOWN = 80,
+	ARROW_LEFT = 75,
+	ARROW_RIGHT = 77
+};

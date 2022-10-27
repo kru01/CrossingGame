@@ -44,6 +44,10 @@ bool CPEOPLE::isImpact(CANIMAL* obj) {
 		&& y >= obj->getY() && y <= obj->getY() + obj->getHeight();
 }
 
+bool CPEOPLE::isImpact(CPEOPLE* human) {
+	return x == human->getX();
+}
+
 void CPEOPLE::setDead(bool flag) {
 	isAlive = !flag;
 }
@@ -52,10 +56,18 @@ bool CPEOPLE::isDead() {
 	return !isAlive;
 }
 
+bool CPEOPLE::isAtFinishLine() {
+	return y <= fieldConstraints::BOUND_TOP;
+}
+
 int CPEOPLE::getX() {
 	return x;
 }
 
 int CPEOPLE::getY() {
 	return y;
+}
+
+void CPEOPLE::setY(int y) {
+	this->y = y;
 }

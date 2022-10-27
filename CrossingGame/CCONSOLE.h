@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <Windows.h>
 #include <string>
+#include <random>
 #include "CCONSTANT.h"
 
 using namespace std;
@@ -27,9 +28,12 @@ public:
 	static int resizeCenterAndGetConsoleRowsCols(bool getRows);
 
 	static void goToXY(int x, int y);
-	static short isPressed(int);
+	static int getRandInt(const int min, const int max);
+	static short isPressedAsync(int nVirtKey);
+	static int getChArrowKeyPressed(int key);
 
 	static void drawTexts(string text, POINT coord, int color, int background = CONSOLE_BG_COLOR);
+	static void eraseTexts(POINT coord, int txtLength, int background = CONSOLE_BG_COLOR);
 	static void drawGraphics(string fileName, POINT coord, int color, int background = CONSOLE_BG_COLOR, int sleepTime = 0);
 	static void eraseGraphics(POINT start, POINT end, int background = CONSOLE_BG_COLOR);
 	static void setColor(int text, int background = CONSOLE_BG_COLOR);
