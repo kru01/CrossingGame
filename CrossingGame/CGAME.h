@@ -14,6 +14,7 @@
 const string FIELD_SPRITE = "assets/gameInterfaces/playfield.txt";
 const int FIELD_COLOR = colors::BLACK;
 const int OBJECT_LIMIT = 5, OBJECT_GAP = 20;
+const int EFFECT_LOOP = 5, EFFECT_DURATION = 250;
 
 class CGAME {
 	CPEOPLE* player;
@@ -40,7 +41,9 @@ class CGAME {
 	void updatePosObject(vector<Obj*>& objVect);
 
 	bool checkImpactPeopleAndDrawEffect();
-	void impactPeopleEffect(CPEOPLE*& victim, int effectTime);
+	void impactPeopleEffect(CPEOPLE*& victim);
+	void playerWinEffect();
+	void playerDeadEffect();
 
 	bool advanceLevel();
 	void runGameOver();

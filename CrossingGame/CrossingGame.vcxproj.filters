@@ -124,5 +124,8 @@
     <Text Include="assets\gameInterfaces\gameWin.txt">
       <Filter>Resource Files\gameInterfaces</Filter>
     </Text>
+    <Text Include="assets\objects\humanCheering.txt">
+      <Filter>Resource Files\objects</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -162,6 +162,7 @@
     <Text Include="assets\objects\car.txt" />
     <Text Include="assets\objects\cat.txt" />
     <Text Include="assets\objects\human.txt" />
+    <Text Include="assets\objects\humanCheering.txt" />
     <Text Include="assets\objects\rabbit.txt" />
     <Text Include="assets\objects\trafficLight.txt" />
   </ItemGroup>

@@ -81,13 +81,13 @@ bool CGAME::checkImpactPeopleAndDrawEffect() {
 	for (auto& human : humansVect)
 		if (player->isImpact(human)) {
 			impacted = true;
-			impactPeopleEffect(human, 250);
+			impactPeopleEffect(human);
 		}
 
 	return impacted;
 }
 
-void CGAME::impactPeopleEffect(CPEOPLE*& victim, int effectTime) {
+void CGAME::impactPeopleEffect(CPEOPLE*& victim) {
 	player->setY(player->getY() + fieldConstraints::VER_SPEED);
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
 
@@ -96,20 +96,40 @@ void CGAME::impactPeopleEffect(CPEOPLE*& victim, int effectTime) {
 
 	const int remarkPos = CCONSOLE::getRandInt(0, HUMAN_REMARKS.size() - 1);
 	CCONSOLE::drawTexts(HUMAN_REMARKS[remarkPos], { victim->getX(), victim->getY() - REMARKS_OFFSET }, HUMAN_HIT_COLOR);
-	Sleep(effectTime);
+	Sleep(EFFECT_DURATION);
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { victim->getX(), victim->getY() }, HUMAN_COLOR);
 	CCONSOLE::eraseTexts({ victim->getX(), victim->getY() - REMARKS_OFFSET }, HUMAN_REMARKS[remarkPos].length());
 }
 
+void CGAME::playerWinEffect() {
+	for (int i = 0; i < EFFECT_LOOP; i++) {
+		for (auto& human : humansVect) CCONSOLE::drawGraphics(HUMAN_CHEER_SPRITE, { human->getX(), human->getY() }, HUMAN_CHEER_COLOR);
+		Sleep(EFFECT_DURATION);
+		for (auto& human : humansVect) CCONSOLE::drawGraphics(HUMAN_SPRITE, { human->getX(), human->getY() }, HUMAN_COLOR);
+		Sleep(EFFECT_DURATION);
+	}
+}
+
+void CGAME::playerDeadEffect() {
+	for (int i = 0; i < EFFECT_LOOP; i++) {
+		CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_HIT_COLOR);
+		Sleep(EFFECT_DURATION);
+		CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR, HUMAN_HIT_COLOR);
+		Sleep(EFFECT_DURATION);
+	}
+}
+
 bool CGAME::advanceLevel() {
 	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
-	CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
-	
+
 	if (level == 5) {
 		player->setDead(true);
+		playerWinEffect();
 		runGameWon();
 		return false;
 	}
+
+	CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
 	
 	level++;
 	string levelText = "level ";
@@ -173,6 +193,7 @@ void CGAME::runGame() {
 		updatePosAnimal();
 
 		if (player->isDead()) {
+			playerDeadEffect();
 			runGameOver();
 			return;
 		}
