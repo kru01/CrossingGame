@@ -16,6 +16,10 @@ int CVEHICLE::getY() {
 	return y;
 }
 
+void CVEHICLE::setY(int y) {
+	this->y = y;
+}
+
 int CVEHICLE::getWidth() {
 	return width;
 }

@@ -13,8 +13,9 @@
 
 const string FIELD_SPRITE = "assets/gameInterfaces/playfield.txt";
 const int FIELD_COLOR = colors::BLACK;
-const int OBJECT_LIMIT = 5, OBJECT_GAP = 20;
+const int OBJECT_ONSCREEN_LIMIT = 5, OBJECT_GAP = 20;
 const int EFFECT_LOOP = 5, EFFECT_DURATION = 250;
+const int RENDER_SPEED = 300; // lower is faster but laggier
 
 class CGAME {
 	CPEOPLE* player;
@@ -44,6 +45,10 @@ class CGAME {
 	void impactPeopleEffect(CPEOPLE*& victim);
 	void playerWinEffect();
 	void playerDeadEffect();
+
+	void clearLane(int lane);
+	void clearAllLane();
+	void assignLaneRandomly();
 
 	bool advanceLevel();
 	void runGameOver();

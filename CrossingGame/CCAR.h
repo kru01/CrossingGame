@@ -6,7 +6,7 @@
 const string CAR_SPRITE = "assets/objects/car.txt";
 const int CAR_WIDTH = 13, CAR_HEIGHT = 4;
 const int CAR_COLOR = colors::RED;
-const POINT CAR_SPAWN_COORD = { fieldConstraints::BOUND_LEFT, fieldConstraints::BOUND_BOTTOM - CAR_HEIGHT };
+const POINT CAR_SPAWN_COORD = { fieldConstraints::BOUND_LEFT, LANE_YCOORD[3] - CAR_HEIGHT};
 
 class CCAR : public CVEHICLE {
 public:

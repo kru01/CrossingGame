@@ -3,15 +3,15 @@
 CGAME::CGAME(CENDSCREEN* endScreen) {
 	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 
-	for (int i = 0; i < OBJECT_LIMIT; i++) {
+	for (int i = 0; i < OBJECT_ONSCREEN_LIMIT; i++) {
 		carsVect.push_back(new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y));
 		busesVect.push_back(new CBUS(BUS_SPAWN_COORD.x, BUS_SPAWN_COORD.y));
 		rabbitsVect.push_back(new CRABBIT(RABBIT_SPAWN_COORD.x, RABBIT_SPAWN_COORD.y));
 		catsVect.push_back(new CCAT(CAT_SPAWN_COORD.x, CAT_SPAWN_COORD.y));
 	}
 
-	tfLightCars = CTRAFFICLIGHT(20, 10);
-	tfLightBuses = CTRAFFICLIGHT(15, 10);
+	tfLightCars = CTRAFFICLIGHT(vehicles::CAR);
+	tfLightBuses = CTRAFFICLIGHT(vehicles::BUS);
 	this->endScreen = endScreen;
 
 	level = 1;
@@ -19,7 +19,7 @@ CGAME::CGAME(CENDSCREEN* endScreen) {
 }
 
 CGAME::~CGAME() {
-	for (int i = 0; i < OBJECT_LIMIT; i++) {
+	for (int i = 0; i < OBJECT_ONSCREEN_LIMIT; i++) {
 		delete carsVect[i], carsVect[i] = nullptr;
 		delete busesVect[i], busesVect[i] = nullptr;
 		delete rabbitsVect[i], rabbitsVect[i] = nullptr;
@@ -119,6 +119,37 @@ void CGAME::playerDeadEffect() {
 	}
 }
 
+void CGAME::clearLane(int lane) {
+	CCONSOLE::eraseGraphics({ fieldConstraints::BOUND_LEFT, lane - fieldConstraints::ROAD_WIDTH + fieldConstraints::BORDER_WIDTH }, { fieldConstraints::BOUND_RIGHT, lane });
+}
+
+void CGAME::clearAllLane() {
+	for (auto& lane : LANE_YCOORD) clearLane(lane);
+}
+
+void CGAME::assignLaneRandomly() {
+	vector<int> laneAssigner, availableLane = LANE_YCOORD;
+	
+	while (!availableLane.empty()) {
+		const int lane = CCONSOLE::getRandInt(0, availableLane.size() - 1);
+		laneAssigner.push_back(availableLane[lane]);
+		availableLane.erase(availableLane.begin() + lane);
+	}
+
+	clearAllLane();
+
+	for (auto& car : carsVect) car->setY(laneAssigner[0] - CAR_HEIGHT);
+	tfLightCars.eraseTFLightAndFixBoard(vehicles::CAR);
+	tfLightCars.setY(CTRAFFICLIGHT::calcTFLightYCoord(laneAssigner[0]));
+
+	for (auto& bus : busesVect) bus->setY(laneAssigner[1] - BUS_HEIGHT);
+	tfLightBuses.eraseTFLightAndFixBoard(vehicles::BUS);
+	tfLightBuses.setY(CTRAFFICLIGHT::calcTFLightYCoord(laneAssigner[1]));
+
+	for (auto& rabbit : rabbitsVect) rabbit->setY(laneAssigner[2] - RABBIT_HEIGHT);
+	for (auto& cat : catsVect) cat->setY(laneAssigner[3] - CAT_HEIGHT);
+}
+
 bool CGAME::advanceLevel() {
 	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 
@@ -130,7 +161,8 @@ bool CGAME::advanceLevel() {
 	}
 
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { player->getX(), player->getY() }, HUMAN_COLOR);
-	
+	assignLaneRandomly();
+
 	level++;
 	string levelText = "level ";
 	levelText.push_back(level + 48);
@@ -151,7 +183,7 @@ void CGAME::runGameWon() {
 }
 
 void CGAME::renewObjects() {
-	for (int i = 0; i < OBJECT_LIMIT; i++) {
+	for (int i = 0; i < OBJECT_ONSCREEN_LIMIT; i++) {
 		delete carsVect[i];
 		carsVect[i] = new CCAR(CAR_SPAWN_COORD.x, CAR_SPAWN_COORD.y);
 
@@ -164,6 +196,9 @@ void CGAME::renewObjects() {
 		delete catsVect[i];
 		catsVect[i] = new CCAT(CAT_SPAWN_COORD.x, CAT_SPAWN_COORD.y);
 	}
+
+	tfLightCars.setY(TFLIGHT_CAR_LANE_COORD.y);
+	tfLightBuses.setY(TFLIGHT_BUS_LANE_COORD.y);
 
 	for (int i = 0; i < humansVect.size(); i++)
 		delete humansVect[i], humansVect[i] = nullptr;
@@ -205,7 +240,7 @@ void CGAME::runGame() {
 				if (!advanceLevel()) return;
 			}
 
-		Sleep(300);
+		Sleep(RENDER_SPEED);
 	}
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 enum fieldConstraints : int {
 	BORDER_WIDTH = 1,
@@ -19,6 +20,14 @@ enum fieldConstraints : int {
 	BOUND_BOTTOM = F_BOTTOM - VER_SPEED,
 	BOUND_LEFT = F_LEFT + HOR_SPEED,
 	BOUND_RIGHT = F_RIGHT - HOR_SPEED
+};
+
+// The lanes that objects can spawn on, ordered from top to bottom
+const std::vector<int> LANE_YCOORD = {
+	fieldConstraints::BOUND_BOTTOM - fieldConstraints::VER_SPEED * 3,
+	fieldConstraints::BOUND_BOTTOM - fieldConstraints::VER_SPEED * 2,
+	fieldConstraints::BOUND_BOTTOM - fieldConstraints::VER_SPEED,
+	fieldConstraints::BOUND_BOTTOM
 };
 
 enum colors : int {

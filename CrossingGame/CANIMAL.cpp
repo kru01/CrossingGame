@@ -15,6 +15,10 @@ int CANIMAL::getY() {
 	return y;
 }
 
+void CANIMAL::setY(int y) {
+	this->y = y;
+}
+
 int CANIMAL::getWidth() {
 	return width;
 }

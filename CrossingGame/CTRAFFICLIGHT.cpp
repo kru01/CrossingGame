@@ -1,9 +1,24 @@
 #include "CTRAFFICLIGHT.h"
 
-CTRAFFICLIGHT::CTRAFFICLIGHT(int greenTime, int redTime) {
+CTRAFFICLIGHT::CTRAFFICLIGHT(int vehicle) {
+	this->x = this->y = 0;
+	this->greenTime = this->redTime = 0;
+
+	switch (vehicle) {
+	case vehicles::CAR:
+		this->x = TFLIGHT_CAR_LANE_COORD.x;
+		this->y = TFLIGHT_CAR_LANE_COORD.y;
+		this->greenTime = CCONSOLE::getRandInt(20, 25);
+		this->redTime = CCONSOLE::getRandInt(10, 20);
+		break;
+	case vehicles::BUS:
+		this->x = TFLIGHT_BUS_LANE_COORD.x;
+		this->y = TFLIGHT_BUS_LANE_COORD.y;
+		this->greenTime = CCONSOLE::getRandInt(10, 20);
+		this->redTime = CCONSOLE::getRandInt(15, 20);
+	}
+
 	this->isRed = false;
-	this->greenTime = greenTime;
-	this->redTime = redTime;
 	this->timeElapsed = 0;
 }
 
@@ -11,12 +26,12 @@ void CTRAFFICLIGHT::updateSprite(int& lane) {
 	if (isRed) {
 		switch (lane) {
 		case vehicles::CAR:
-			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, TFLIGHT_CAR_LANE_COORD, colors::BLACK);
-			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { TFLIGHT_CAR_LANE_COORD.x, TFLIGHT_CAR_LANE_COORD.y + 1 }, colors::RED);
+			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y }, colors::BLACK);
+			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y + 1 }, colors::RED);
 			break;
 		case vehicles::BUS:
-			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, TFLIGHT_BUS_LANE_COORD, colors::BLACK);
-			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { TFLIGHT_BUS_LANE_COORD.x, TFLIGHT_BUS_LANE_COORD.y + 1 }, colors::RED);
+			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y }, colors::BLACK);
+			CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y + 1 }, colors::RED);
 		}
 
 		return;
@@ -24,12 +39,32 @@ void CTRAFFICLIGHT::updateSprite(int& lane) {
 
 	switch (lane) {
 	case vehicles::CAR:
-		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, TFLIGHT_CAR_LANE_COORD, colors::GREEN);
-		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { TFLIGHT_CAR_LANE_COORD.x, TFLIGHT_CAR_LANE_COORD.y + 1 }, colors::BLACK);
+		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y }, colors::GREEN);
+		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y + 1 }, colors::BLACK);
 		break;
 	case vehicles::BUS:
-		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, TFLIGHT_BUS_LANE_COORD, colors::GREEN);
-		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { TFLIGHT_BUS_LANE_COORD.x, TFLIGHT_BUS_LANE_COORD.y + 1 }, colors::BLACK);
+		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y }, colors::GREEN);
+		CCONSOLE::drawGraphics(TFLIGHT_SPRITE, { x, y + 1 }, colors::BLACK);
+	}
+}
+
+void CTRAFFICLIGHT::setY(int y) {
+	this->y = y;
+}
+
+int CTRAFFICLIGHT::calcTFLightYCoord(int lane) {
+	return lane - fieldConstraints::VER_SPEED + TFLIGHT_HEIGHT;
+}
+
+void CTRAFFICLIGHT::eraseTFLightAndFixBoard(int vehicle) {
+	CCONSOLE::eraseGraphics({ x, y }, { x + TFLIGHT_WIDTH, y + TFLIGHT_HEIGHT });
+
+	switch (vehicle) {
+	case vehicles::CAR:
+		for (int i = 0; i <= 1; i++) CCONSOLE::drawTexts("|", { x + TFLIGHT_WIDTH / 2, y + i }, colors::BLACK);
+		break;
+	case vehicles::BUS:
+		for (int i = 0; i <= 1; i++) CCONSOLE::drawTexts("|", { x, y + i }, colors::BLACK);
 	}
 }
 
