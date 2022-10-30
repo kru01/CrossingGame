@@ -21,15 +21,17 @@ class CCONSOLE {
 	static void resizeAndCenterConsole(int width, int height);
 	static void fixConsoleWindow();
 	static void disableQuickEditMode();
-	static void showConsoleCursor(bool flag);
 
 public:
 	static void initConsoleWindow();
 	static int resizeCenterAndGetConsoleRowsCols(bool getRows);
+	static void showConsoleCursor(bool flag);
 
 	static void goToXY(int x, int y);
 	static int getRandInt(const int min, const int max);
 	static short isPressedAsync(int nVirtKey);
+	static short isToggledAsync(int nVirtKey);
+	static void flushKeyPressedAsync();
 	static int getChArrowKeyPressed(int key);
 
 	static void drawTexts(string text, POINT coord, int color, int background = CONSOLE_BG_COLOR);
@@ -40,4 +42,5 @@ public:
 	static void clearScreen();
 };
 
+// 190 x 47
 const int CONSOLE_WIDTH = CCONSOLE::resizeCenterAndGetConsoleRowsCols(false), CONSOLE_HEIGHT = CCONSOLE::resizeCenterAndGetConsoleRowsCols(true);

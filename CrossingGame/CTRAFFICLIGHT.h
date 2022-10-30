@@ -21,7 +21,19 @@ public:
 	CTRAFFICLIGHT() = default;
 	CTRAFFICLIGHT(int vehicle);
 	
+	int getX();
+	int getY();
+	int getGreenTime();
+	int getRedTime();
+	int getTimeElapsed();
+	bool isRedLight();
+
+	void setX(int x);
 	void setY(int y);
+	void setGreenTime(int greenTime);
+	void setRedTime(int redTime);
+	void setTimeElapsed(int timeElapsed);
+	void setLight(bool isRed);
 
 	static int calcTFLightYCoord(int lane);
 	void eraseTFLightAndFixBoard(int vehicle);

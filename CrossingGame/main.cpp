@@ -14,7 +14,38 @@ int main() {
 	thread gameRunner(&CGAME::runGame, game);
 
 	while (true) {
-		if (!game->isRunning()) {
+		if (!game->isPlayerDead()) {
+			if (CCONSOLE::isToggledAsync('E'))
+				if (!game->isRunning()) {
+					game->resumeGame();
+					gameRunner.join();
+					gameRunner = thread(&CGAME::runGame, game);
+				} else game->pauseGame();
+
+			if (CCONSOLE::isToggledAsync('Z')) {
+				game->pauseGame();
+				gameRunner.join();
+				game->saveGame();
+				game->resumeGame();
+				gameRunner = thread(&CGAME::runGame, game);
+			}
+
+			if (CCONSOLE::isToggledAsync('X')) {
+				game->pauseGame();
+				gameRunner.join();
+				game->loadGame(true);
+				game->resumeGame();
+				gameRunner = thread(&CGAME::runGame, game);
+			}
+
+			if (CCONSOLE::isToggledAsync(VK_ESCAPE)) {
+				game->terminateGame(gameRunner);
+				delete game;
+				game = nullptr;
+				return 0;
+			}
+
+		} else if (!game->isRunning()) {
 			if (endScreen.isPlayAgain()) {
 				game->resetGame();
 				gameRunner.join();

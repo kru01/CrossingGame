@@ -48,8 +48,52 @@ void CTRAFFICLIGHT::updateSprite(int& lane) {
 	}
 }
 
+int CTRAFFICLIGHT::getX() {
+	return x;
+}
+
+int CTRAFFICLIGHT::getY() {
+	return y;
+}
+
+int CTRAFFICLIGHT::getGreenTime() {
+	return greenTime;
+}
+
+int CTRAFFICLIGHT::getRedTime() {
+	return redTime;
+}
+
+int CTRAFFICLIGHT::getTimeElapsed() {
+	return timeElapsed;
+}
+
+bool CTRAFFICLIGHT::isRedLight() {
+	return isRed;
+}
+
+void CTRAFFICLIGHT::setX(int x) {
+	this->x = x;
+}
+
 void CTRAFFICLIGHT::setY(int y) {
 	this->y = y;
+}
+
+void CTRAFFICLIGHT::setGreenTime(int greenTime) {
+	this->greenTime = greenTime;
+}
+
+void CTRAFFICLIGHT::setRedTime(int redTime) {
+	this->redTime = redTime;
+}
+
+void CTRAFFICLIGHT::setTimeElapsed(int timeElapsed) {
+	this->timeElapsed = timeElapsed;
+}
+
+void CTRAFFICLIGHT::setLight(bool isRed) {
+	this->isRed = isRed;
 }
 
 int CTRAFFICLIGHT::calcTFLightYCoord(int lane) {
@@ -61,10 +105,10 @@ void CTRAFFICLIGHT::eraseTFLightAndFixBoard(int vehicle) {
 
 	switch (vehicle) {
 	case vehicles::CAR:
-		for (int i = 0; i <= 1; i++) CCONSOLE::drawTexts("|", { x + TFLIGHT_WIDTH / 2, y + i }, colors::BLACK);
+		for (int i = 0; i <= 1; i++) CCONSOLE::drawTexts("|", { x + TFLIGHT_WIDTH / 2, y + i }, FIELD_COLOR);
 		break;
 	case vehicles::BUS:
-		for (int i = 0; i <= 1; i++) CCONSOLE::drawTexts("|", { x, y + i }, colors::BLACK);
+		for (int i = 0; i <= 1; i++) CCONSOLE::drawTexts("|", { x, y + i }, FIELD_COLOR);
 	}
 }
 

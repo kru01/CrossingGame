@@ -15,6 +15,10 @@ int CANIMAL::getY() {
 	return y;
 }
 
+void CANIMAL::setX(int x) {
+	this->x = x;
+}
+
 void CANIMAL::setY(int y) {
 	this->y = y;
 }

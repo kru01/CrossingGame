@@ -20,13 +20,6 @@ void CCONSOLE::disableQuickEditMode() {
 	SetConsoleMode(CONSOLE_STD_INPUT, ENABLE_EXTENDED_FLAGS | (prevMode & ~ENABLE_QUICK_EDIT_MODE));
 }
 
-void CCONSOLE::showConsoleCursor(bool flag) {
-	CONSOLE_CURSOR_INFO cursorInfo;
-	cursorInfo.dwSize = 100;
-	cursorInfo.bVisible = flag;
-	SetConsoleCursorInfo(CONSOLE_STD_OUTPUT, &cursorInfo);
-}
-
 void CCONSOLE::initConsoleWindow() {
 	// resizeAndCenterConsole is called in resizeCenterAndGetConsoleRowsCols
 	// This is lowkey stupid but it's the only way to init CONSOLE_WIDTH and CONSOLE_HEIGHT at runtime
@@ -47,6 +40,13 @@ int CCONSOLE::resizeCenterAndGetConsoleRowsCols(bool getRows) {
 	return csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
+void CCONSOLE::showConsoleCursor(bool flag) {
+	CONSOLE_CURSOR_INFO cursorInfo;
+	cursorInfo.dwSize = 100;
+	cursorInfo.bVisible = flag;
+	SetConsoleCursorInfo(CONSOLE_STD_OUTPUT, &cursorInfo);
+}
+
 void CCONSOLE::goToXY(int x, int y) {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(CONSOLE_STD_OUTPUT, coord);
@@ -62,7 +62,22 @@ int CCONSOLE::getRandInt(const int min, const int max) {
 short CCONSOLE::isPressedAsync(int nVirtKey) {
 	// GetAsyncKeyState will leave keys in the buffer
 	// Try FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE)); if you encounter weird input behaviors
+	return GetAsyncKeyState(nVirtKey);
+}
+
+short CCONSOLE::isToggledAsync(int nVirtKey) {
 	return GetAsyncKeyState(nVirtKey) & 0x01;
+}
+
+// This is beyond dumb, refer to this https://stackoverflow.com/questions/36870063/how-to-flush-or-clear-getasynckeystates-buffer
+void CCONSOLE::flushKeyPressedAsync() {
+	isPressedAsync('W');
+	isPressedAsync('S');
+	isPressedAsync('A');
+	isPressedAsync('D');
+	isToggledAsync('E');
+	isToggledAsync('Z');
+	isToggledAsync('X');
 }
 
 int CCONSOLE::getChArrowKeyPressed(int key) {

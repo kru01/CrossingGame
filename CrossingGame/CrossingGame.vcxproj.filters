@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\objects">
       <UniqueIdentifier>{e75e59a8-9a49-46fa-b43c-4fcd76a3caff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\mainMenu">
+      <UniqueIdentifier>{d40ab19b-5fa9-44f7-8cd3-f46992c48a9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,6 +129,9 @@
     </Text>
     <Text Include="assets\objects\humanCheering.txt">
       <Filter>Resource Files\objects</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\guideBox.txt">
+      <Filter>Resource Files\gameInterfaces</Filter>
     </Text>
   </ItemGroup>
 </Project>

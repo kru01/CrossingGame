@@ -48,8 +48,12 @@ bool CPEOPLE::isImpact(CPEOPLE* human) {
 	return x == human->getX();
 }
 
-void CPEOPLE::setDead(bool flag) {
-	isAlive = !flag;
+int CPEOPLE::getX() {
+	return x;
+}
+
+int CPEOPLE::getY() {
+	return y;
 }
 
 bool CPEOPLE::isDead() {
@@ -60,14 +64,14 @@ bool CPEOPLE::isAtFinishLine() {
 	return y <= fieldConstraints::BOUND_TOP;
 }
 
-int CPEOPLE::getX() {
-	return x;
-}
-
-int CPEOPLE::getY() {
-	return y;
+void CPEOPLE::setX(int x) {
+	this->x = x;
 }
 
 void CPEOPLE::setY(int y) {
 	this->y = y;
+}
+
+void CPEOPLE::setDead(bool flag) {
+	isAlive = !flag;
 }

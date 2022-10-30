@@ -10,6 +10,14 @@ CGAME::CGAME(CENDSCREEN* endScreen) {
 		catsVect.push_back(new CCAT(CAT_SPAWN_COORD.x, CAT_SPAWN_COORD.y));
 	}
 
+	for (const auto& entry : filesystem::directory_iterator{ SAVEFILE_PATH }) {
+		if (savesVect.size() >= SAVEFILE_LIMIT) break;
+		const auto& entryPath = entry.path();
+
+		if (entry.is_regular_file() && entryPath.extension().string() == SAVEFILE_EXTENSION)
+			savesVect.push_back(entryPath.stem().string());
+	}
+
 	tfLightCars = CTRAFFICLIGHT(vehicles::CAR);
 	tfLightBuses = CTRAFFICLIGHT(vehicles::BUS);
 	this->endScreen = endScreen;
@@ -150,6 +158,32 @@ void CGAME::assignLaneRandomly() {
 	for (auto& cat : catsVect) cat->setY(laneAssigner[3] - CAT_HEIGHT);
 }
 
+void CGAME::drawGameStatus(bool isRunning) {
+	CCONSOLE::drawTexts((isRunning ? "RUNNING" : "PAUSING"), { guideBoxConstraints::GAME_STATUS_XCOORD, guideBoxConstraints::GAME_STATUS_YCOORD }, GUIDEBOX_COLOR);
+}
+
+void CGAME::drawLevelNum(int level) {
+	CCONSOLE::eraseGraphics({ guideBoxConstraints::LV_NUM_XCOORD, guideBoxConstraints::LV_NUM_YCOORD }, { guideBoxConstraints::LV_NUM_XCOORD + NUMBER_WIDTH * 2, guideBoxConstraints::LV_NUM_YCOORD + NUMBER_HEIGHT });
+	string lvNum = "", numSprite = NUMBER_SPRITE;
+
+	if (level < 10) lvNum.push_back('0');
+	lvNum += to_string(level);
+
+	numSprite[numSprite.size() - 5] = lvNum[0];
+	CCONSOLE::drawGraphics(numSprite, { guideBoxConstraints::LV_NUM_XCOORD, guideBoxConstraints::LV_NUM_YCOORD }, GUIDEBOX_COLOR);
+	numSprite[numSprite.size() - 5] = lvNum[1];
+	CCONSOLE::drawGraphics(numSprite, { guideBoxConstraints::LV_NUM_XCOORD + NUMBER_WIDTH, guideBoxConstraints::LV_NUM_YCOORD }, GUIDEBOX_COLOR);
+}
+
+void CGAME::drawHumansVect() {
+	for (auto& human : humansVect)
+		CCONSOLE::drawGraphics(HUMAN_SPRITE, { human->getX(), human->getY() }, HUMAN_COLOR);
+}
+
+void CGAME::eraseTextBoxContent() {
+	CCONSOLE::eraseGraphics({ guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD }, { guideBoxConstraints::TEXT_BOX_XCOORD + guideBoxConstraints::TEXT_BOX_WIDTH, guideBoxConstraints::TEXT_BOX_YCOORD + guideBoxConstraints::TEXT_BOX_HEIGHT });
+}
+
 bool CGAME::advanceLevel() {
 	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 
@@ -164,9 +198,7 @@ bool CGAME::advanceLevel() {
 	assignLaneRandomly();
 
 	level++;
-	string levelText = "level ";
-	levelText.push_back(level + 48);
-	CCONSOLE::drawTexts(levelText, { fieldConstraints::F_RIGHT + 10, fieldConstraints::F_TOP - 5 }, colors::BLACK);
+	drawLevelNum(level);
 	return true;
 }
 
@@ -208,10 +240,134 @@ void CGAME::renewObjects() {
 	player = new CPEOPLE(HUMAN_SPAWN_COORD.x, HUMAN_SPAWN_COORD.y);
 }
 
+void CGAME::getSavefilePath(string& savefile) {
+	savefile += SAVEFILE_EXTENSION;
+	savefile = SAVEFILE_PATH + savefile;
+}
+
+void CGAME::listSavefile(bool isInGame) {
+	POINT drawCoord = { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD };
+	int color = GUIDEBOX_COLOR;
+
+	if (!isInGame) {
+		drawCoord = { 0, 0 };
+		color = colors::BLACK;
+	} else CCONSOLE::eraseGraphics(drawCoord, { drawCoord.x + guideBoxConstraints::TEXT_BOX_WIDTH, drawCoord.y + SAVEFILE_LIMIT + 1 });
+
+	CCONSOLE::drawTexts("Savefiles: oldest to newest", drawCoord, color);
+	string filename = "";
+
+	for (int i = 0; i < savesVect.size(); i++) {
+		filename = to_string(i + 1);
+		filename += ". ";
+		filename += savesVect[i];
+		CCONSOLE::drawTexts(filename, { drawCoord.x, drawCoord.y + 1 + i }, color);
+		filename = "";
+	}
+}
+
+void CGAME::standardizeFilename(string& filename) {
+	if (filename.size() > SAVEFILE_MAX_LENGTH) filename.erase(SAVEFILE_MAX_LENGTH - 1);
+
+	filename.erase(remove_if(filename.begin(), filename.end(), [](const char& c) {
+		return !isalnum(c);
+		}), filename.end());
+}
+
+string CGAME::promptSavefileName(bool isInGame) {
+	POINT drawCoord = { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD };
+	int color = GUIDEBOX_COLOR;
+
+	if (!isInGame) {
+		drawCoord = { 0, 0 };
+		color = colors::BLACK;
+	}
+
+	CCONSOLE::drawTexts("Input savefile's name:", { drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 1 }, color);
+	
+	FlushConsoleInputBuffer(CONSOLE_STD_INPUT);
+	CCONSOLE::goToXY(drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 2);
+	CCONSOLE::showConsoleCursor(true);
+	string buffer;
+	cin >> buffer;
+	CCONSOLE::showConsoleCursor(false);
+	CCONSOLE::flushKeyPressedAsync();
+
+	standardizeFilename(buffer);
+	return buffer;
+}
+
+template<class Obj>
+void CGAME::writeObjectToFile(ofstream& fout, const vector<Obj*>& objVect) {
+	int x = 0, y = 0;
+	bool canMove = false;
+
+	for (int i = 0; i < OBJECT_ONSCREEN_LIMIT; i++) {
+		x = objVect[i]->getX();
+		y = objVect[i]->getY();
+		canMove = objVect[i]->canMove();
+		fout.write(reinterpret_cast<const char*>(&x), sizeof(x));
+		fout.write(reinterpret_cast<const char*>(&y), sizeof(y));
+		fout.write(reinterpret_cast<const char*>(&canMove), sizeof(canMove));
+	}
+}
+
+template<class Obj>
+void CGAME::writeTFLightToFile(ofstream& fout, Obj& tfLight) {
+	int x = tfLight.getX(), y = tfLight.getY();
+	bool isRed = tfLight.isRedLight();
+	int greenTime = tfLight.getGreenTime(), redTime = tfLight.getRedTime(), timeElapsed = tfLight.getTimeElapsed();
+
+	fout.write(reinterpret_cast<const char*>(&x), sizeof(x));
+	fout.write(reinterpret_cast<const char*>(&y), sizeof(y));
+	fout.write(reinterpret_cast<const char*>(&isRed), sizeof(isRed));
+	fout.write(reinterpret_cast<const char*>(&greenTime), sizeof(greenTime));
+	fout.write(reinterpret_cast<const char*>(&redTime), sizeof(redTime));
+	fout.write(reinterpret_cast<const char*>(&timeElapsed), sizeof(timeElapsed));
+}
+
+template<class Obj>
+void CGAME::readObjectFromFile(ifstream& fin, vector<Obj*>& objVect) {
+	int x = 0, y = 0;
+	bool canMove = false;
+
+	for (int i = 0; i < OBJECT_ONSCREEN_LIMIT; i++) {
+		fin.read(reinterpret_cast<char*>(&x), sizeof(x));
+		fin.read(reinterpret_cast<char*>(&y), sizeof(y));
+		fin.read(reinterpret_cast<char*>(&canMove), sizeof(canMove));
+		objVect[i]->setX(x);
+		objVect[i]->setY(y);
+		objVect[i]->setMove(canMove);
+	}
+}
+
+template<class Obj>
+void CGAME::readTFLightFromFile(ifstream& fin, Obj& tfLight) {
+	int x = 0, y = 0;
+	bool isRed = false;
+	int greenTime = 0, redTime = 0, timeElapsed = 0;
+	
+	fin.read(reinterpret_cast<char*>(&x), sizeof(x));
+	fin.read(reinterpret_cast<char*>(&y), sizeof(y));
+	fin.read(reinterpret_cast<char*>(&isRed), sizeof(isRed));
+	fin.read(reinterpret_cast<char*>(&greenTime), sizeof(greenTime));
+	fin.read(reinterpret_cast<char*>(&redTime), sizeof(redTime));
+	fin.read(reinterpret_cast<char*>(&timeElapsed), sizeof(timeElapsed));
+
+	tfLight.setX(x);
+	tfLight.setY(y);
+	tfLight.setGreenTime(greenTime);
+	tfLight.setRedTime(redTime);
+	tfLight.setTimeElapsed(timeElapsed);
+	tfLight.setLight(isRed);
+}
+
 void CGAME::initGameGraphics() {
 	CCONSOLE::clearScreen();
 	CCONSOLE::drawGraphics(FIELD_SPRITE, { fieldConstraints::HOR_OFFSET, fieldConstraints::VER_OFFSET }, FIELD_COLOR);
-	CCONSOLE::drawTexts("level 1", {fieldConstraints::F_RIGHT + 10, fieldConstraints::F_TOP - 5}, colors::BLACK);
+	CCONSOLE::drawGraphics(GUIDEBOX_SPRITE, { guideBoxConstraints::GUIDEBOX_XCOORD, guideBoxConstraints::GUIDEBOX_YCOORD }, GUIDEBOX_COLOR);
+	drawLevelNum(1);
+	drawGameStatus(true);
 }
 
 void CGAME::runGame() {
@@ -249,6 +405,7 @@ void CGAME::resetGame() {
 	level = 1;
 	initGameGraphics();
 	isInProgress = true;
+	CCONSOLE::flushKeyPressedAsync();
 }
 
 void CGAME::terminateGame(thread& gameRunner) {
@@ -257,6 +414,129 @@ void CGAME::terminateGame(thread& gameRunner) {
 	gameRunner.join();
 }
 
+void CGAME::resumeGame() {
+	isInProgress = true;
+	drawGameStatus(true);
+}
+
+void CGAME::pauseGame() {
+	isInProgress = false;
+	drawGameStatus(false);
+}
+
+void CGAME::saveGame() {
+	eraseTextBoxContent();
+	listSavefile(true);
+	string outfile = promptSavefileName(true);
+
+	if (find(savesVect.begin(), savesVect.end(), outfile) == savesVect.end()) {
+		savesVect.push_back(outfile);
+
+		if (savesVect.size() > SAVEFILE_LIMIT) {
+			string oldestFile = savesVect[0];
+			getSavefilePath(oldestFile);
+			filesystem::remove(oldestFile);
+			savesVect.erase(savesVect.begin());
+		}
+		listSavefile(true);
+	}
+
+	getSavefilePath(outfile);
+	ofstream fout(outfile, ios::binary | ios::trunc);
+	if (fout.fail()) {
+		CCONSOLE::drawTexts("Unable to create savefile!", { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD + SAVEFILE_LIMIT + 3 }, GUIDEBOX_COLOR);
+		return;
+	}
+
+	fout.write(reinterpret_cast<const char*>(&level), sizeof(level));
+	writeObjectToFile(fout, carsVect);
+	writeObjectToFile(fout, busesVect);
+	writeObjectToFile(fout, rabbitsVect);
+	writeObjectToFile(fout, catsVect);
+
+	int x = player->getX(), y = player->getY();
+	bool isDead = player->isDead();
+	fout.write(reinterpret_cast<const char*>(&x), sizeof(x));
+	fout.write(reinterpret_cast<const char*>(&y), sizeof(y));
+	fout.write(reinterpret_cast<const char*>(&isDead), sizeof(isDead));
+
+	int humanSize = humansVect.size();
+	fout.write(reinterpret_cast<const char*>(&humanSize), sizeof(humanSize));
+	for (int i = 0; i < humanSize; i++) {
+		x = humansVect[i]->getX();
+		y = humansVect[i]->getY();
+		fout.write(reinterpret_cast<const char*>(&x), sizeof(x));
+		fout.write(reinterpret_cast<const char*>(&y), sizeof(y));
+	}
+
+	writeTFLightToFile(fout, tfLightCars);
+	writeTFLightToFile(fout, tfLightBuses);
+	fout.close();
+	CCONSOLE::drawTexts("Saved successfully!", { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD + SAVEFILE_LIMIT + 4 }, GUIDEBOX_COLOR);
+}
+
+void CGAME::loadGame(bool isInGame) {
+	eraseTextBoxContent();
+	listSavefile(isInGame);
+	string infile = promptSavefileName(isInGame);
+	getSavefilePath(infile);
+	ifstream fin(infile, ios::binary);
+
+	if (fin.fail()) {
+		POINT errorCoord = { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD };
+		int color = GUIDEBOX_COLOR;
+		
+		if (!isInGame) {
+			errorCoord = { 0, 0 };
+			color = colors::BLACK;
+		}
+
+		CCONSOLE::drawTexts("No such savefile exists!", { errorCoord.x, errorCoord.y + SAVEFILE_LIMIT + 3 }, color);
+		return;
+	}
+
+	fin.read(reinterpret_cast<char*>(&level), sizeof(level));
+	readObjectFromFile(fin, carsVect);
+	readObjectFromFile(fin, busesVect);
+	readObjectFromFile(fin, rabbitsVect);
+	readObjectFromFile(fin, catsVect);
+
+	int x = 0, y = 0;
+	bool isDead = false;
+	fin.read(reinterpret_cast<char*>(&x), sizeof(x));
+	fin.read(reinterpret_cast<char*>(&y), sizeof(y));
+	fin.read(reinterpret_cast<char*>(&isDead), sizeof(isDead));
+	player->setX(x);
+	player->setY(y);
+	player->setDead(isDead);
+
+	int humanSize = 0;
+	fin.read(reinterpret_cast<char*>(&humanSize), sizeof(humanSize));
+
+	for (int i = 0; i < humansVect.size(); i++)
+		delete humansVect[i], humansVect[i] = nullptr;
+	humansVect.clear();
+
+	for (int i = 0; i < humanSize; i++) {
+		fin.read(reinterpret_cast<char*>(&x), sizeof(x));
+		fin.read(reinterpret_cast<char*>(&y), sizeof(y));
+		humansVect.push_back(new CPEOPLE(x, y));
+	}
+
+	readTFLightFromFile(fin, tfLightCars);
+	readTFLightFromFile(fin, tfLightBuses);
+	fin.close();
+
+	initGameGraphics();
+	drawLevelNum(level);
+	drawHumansVect();
+	CCONSOLE::drawTexts("Savefile loaded successfully!", { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD + guideBoxConstraints::TEXT_BOX_HEIGHT - 1 }, GUIDEBOX_COLOR);
+}
+
 bool CGAME::isRunning() {
 	return isInProgress;
+}
+
+bool CGAME::isPlayerDead() {
+	return player->isDead();
 }

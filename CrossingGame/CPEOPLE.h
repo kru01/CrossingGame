@@ -35,11 +35,12 @@ public:
 	bool isImpact(CANIMAL* obj);
 	bool isImpact(CPEOPLE* human);
 
-	void setDead(bool flag);
-	bool isDead();
-	bool isAtFinishLine();
-	
 	int getX();
 	int getY();
+	bool isDead();
+	bool isAtFinishLine();
+
+	void setX(int x);
 	void setY(int y);
+	void setDead(bool flag);
 };

@@ -16,6 +16,10 @@ int CVEHICLE::getY() {
 	return y;
 }
 
+void CVEHICLE::setX(int x) {
+	this->x = x;
+}
+
 void CVEHICLE::setY(int y) {
 	this->y = y;
 }
