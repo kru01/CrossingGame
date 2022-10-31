@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <thread>
 #include <filesystem>
 #include <algorithm>
@@ -11,6 +12,7 @@
 #include "CRABBIT.h"
 #include "CCAT.h"
 #include "CTRAFFICLIGHT.h"
+#include "CMAINMENU.h"
 #include "CENDSCREEN.h"
 
 // FIELD_SPRITE and FIELD_COLOR are in CCONSTANT.h
@@ -29,7 +31,7 @@ class CGAME {
 	vector<CBUS*> busesVect;
 	vector<CRABBIT*> rabbitsVect;
 	vector<CCAT*> catsVect;
-	vector<string> savesVect;
+	set<string> savesSet;
 
 	CTRAFFICLIGHT tfLightCars;
 	CTRAFFICLIGHT tfLightBuses;
@@ -68,6 +70,7 @@ class CGAME {
 
 	void getSavefilePath(string& savefile);
 	void listSavefile(bool isInGame);
+	static void decapitalizeString(string& str);
 	void standardizeFilename(string& filename);
 	string promptSavefileName(bool isInGame);
 
@@ -80,11 +83,13 @@ class CGAME {
 	template<class Obj>
 	void readTFLightFromFile(ifstream& fin, Obj& tfLight);
 
+	void populateHumansVect();
+
 public:
 	CGAME(CENDSCREEN* endScreen);
 	~CGAME();
 
-	static void initGameGraphics();
+	void initGameGraphics();
 
 	void runGame();
 	void resetGame();
@@ -93,7 +98,10 @@ public:
 	void resumeGame();
 	void pauseGame();
 	void saveGame();
-	void loadGame(bool isInGame);
+	bool loadGame(bool isInGame);
+
+	int getLevel();
+	void setLevel(int level);
 
 	bool isRunning();
 	bool isPlayerDead();

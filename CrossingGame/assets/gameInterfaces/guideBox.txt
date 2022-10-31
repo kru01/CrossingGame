@@ -25,13 +25,13 @@
 │║                               ║│
 │║ -Filename must be under 11    ║│
 │║ characters and NOT contain    ║│
-│║ spaces and special symbols.   ║│
+│║ spaces, special symbols and   ║│
+│║ is case-insensitive.          ║│
 │║ -Savefiles are limited to 10. ║│
 │║ -Once the limit is hit, the   ║│
-│║ oldest file will be deleted.  ║│
+│║ topmost file will be deleted. ║│
 │║ -Inputting the same name with ║│
 │║ a savefile will overwrite it. ║│
-│║                               ║│
 │║                               ║│
 │║                               ║│
 │╚═══════════════════════════════╝│

@@ -78,6 +78,7 @@ void CCONSOLE::flushKeyPressedAsync() {
 	isToggledAsync('E');
 	isToggledAsync('Z');
 	isToggledAsync('X');
+	isToggledAsync('C');
 }
 
 int CCONSOLE::getChArrowKeyPressed(int key) {

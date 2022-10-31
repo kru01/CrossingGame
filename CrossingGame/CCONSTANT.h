@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+const int MAX_GAME_LV = 5;
+
 enum colors : int {
 	BLACK,
 	BLUE,

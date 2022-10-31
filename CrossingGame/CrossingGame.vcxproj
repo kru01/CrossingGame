@@ -136,6 +136,7 @@
     <ClCompile Include="CCONSOLE.cpp" />
     <ClCompile Include="CENDSCREEN.cpp" />
     <ClCompile Include="CGAME.cpp" />
+    <ClCompile Include="CMAINMENU.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
     <ClCompile Include="CRABBIT.cpp" />
     <ClCompile Include="CTRAFFICLIGHT.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="CCONSTANT.h" />
     <ClInclude Include="CENDSCREEN.h" />
     <ClInclude Include="CGAME.h" />
+    <ClInclude Include="CMAINMENU.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CBUS.h" />
     <ClInclude Include="CRABBIT.h" />
@@ -159,8 +161,26 @@
   <ItemGroup>
     <Text Include="assets\gameInterfaces\gameOver.txt" />
     <Text Include="assets\gameInterfaces\guideBox.txt" />
+    <Text Include="assets\gameInterfaces\numbers\0.txt" />
+    <Text Include="assets\gameInterfaces\numbers\1.txt" />
+    <Text Include="assets\gameInterfaces\numbers\2.txt" />
+    <Text Include="assets\gameInterfaces\numbers\3.txt" />
+    <Text Include="assets\gameInterfaces\numbers\4.txt" />
+    <Text Include="assets\gameInterfaces\numbers\5.txt" />
+    <Text Include="assets\gameInterfaces\numbers\6.txt" />
+    <Text Include="assets\gameInterfaces\numbers\7.txt" />
+    <Text Include="assets\gameInterfaces\numbers\8.txt" />
+    <Text Include="assets\gameInterfaces\numbers\9.txt" />
     <Text Include="assets\gameInterfaces\playfield.txt" />
     <Text Include="assets\gameInterfaces\gameWin.txt" />
+    <Text Include="assets\mainMenu\about.txt" />
+    <Text Include="assets\mainMenu\crossing.txt" />
+    <Text Include="assets\mainMenu\game.txt" />
+    <Text Include="assets\mainMenu\loadInterface.txt" />
+    <Text Include="assets\mainMenu\menu.txt" />
+    <Text Include="assets\mainMenu\road.txt" />
+    <Text Include="assets\mainMenu\setting.txt" />
+    <Text Include="assets\mainMenu\settingSymbols.txt" />
     <Text Include="assets\objects\bus.txt" />
     <Text Include="assets\objects\car.txt" />
     <Text Include="assets\objects\cat.txt" />

@@ -22,6 +22,9 @@
     <Filter Include="Resource Files\mainMenu">
       <UniqueIdentifier>{d40ab19b-5fa9-44f7-8cd3-f46992c48a9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\gameInterfaces\numbers">
+      <UniqueIdentifier>{ae55e10b-d1e3-4fb2-b464-bfea6e29b02a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CENDSCREEN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMAINMENU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,6 +104,9 @@
     <ClInclude Include="CENDSCREEN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CMAINMENU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\gameInterfaces\playfield.txt">
@@ -132,6 +141,60 @@
     </Text>
     <Text Include="assets\gameInterfaces\guideBox.txt">
       <Filter>Resource Files\gameInterfaces</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\crossing.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\game.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\menu.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\road.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\0.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\1.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\2.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\3.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\4.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\5.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\6.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\7.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\8.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\gameInterfaces\numbers\9.txt">
+      <Filter>Resource Files\gameInterfaces\numbers</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\loadInterface.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\about.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\setting.txt">
+      <Filter>Resource Files\mainMenu</Filter>
+    </Text>
+    <Text Include="assets\mainMenu\settingSymbols.txt">
+      <Filter>Resource Files\mainMenu</Filter>
     </Text>
   </ItemGroup>
 </Project>

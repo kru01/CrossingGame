@@ -10,19 +10,18 @@ void CENDSCREEN::drawEndscreen(bool isGameOver) {
 }
 
 void CENDSCREEN::drawInput(int currY) {
-	CCONSOLE::drawTexts(FIRST_OPT, ES_FIRST_OPT_COORD, ES_COLOR);
-	CCONSOLE::drawTexts(SECOND_OPT, { ES_FIRST_OPT_COORD.x, ES_FIRST_OPT_COORD.y + OPTION_GAP }, ES_COLOR);
-	CCONSOLE::drawTexts(THIRD_OPT, { ES_FIRST_OPT_COORD.x, ES_FIRST_OPT_COORD.y + OPTION_GAP * 2 }, ES_COLOR);
+	for (int i = 0; i < ES_OPTIONS.size(); i++) {
+		const int optionYCoord = ES_FIRST_OPT_COORD.y + endScreenConstraints::ES_OPTION_GAP * i;
 
-	if (currY == ES_FIRST_OPT_COORD.y) CCONSOLE::drawTexts(FIRST_OPT, ES_FIRST_OPT_COORD, ES_COLOR, ES_SELECT_COLOR);
-	else if (currY == ES_FIRST_OPT_COORD.y + OPTION_GAP) CCONSOLE::drawTexts(SECOND_OPT, { ES_FIRST_OPT_COORD.x, ES_FIRST_OPT_COORD.y + OPTION_GAP }, ES_COLOR, ES_SELECT_COLOR);
-	else if (currY == ES_FIRST_OPT_COORD.y + OPTION_GAP * 2) CCONSOLE::drawTexts(THIRD_OPT, { ES_FIRST_OPT_COORD.x, ES_FIRST_OPT_COORD.y + OPTION_GAP * 2 }, ES_COLOR, ES_SELECT_COLOR);
+		if (currY != optionYCoord) CCONSOLE::drawTexts(ES_OPTIONS[i], { ES_FIRST_OPT_COORD.x, optionYCoord }, ES_COLOR);
+		else CCONSOLE::drawTexts(ES_OPTIONS[i], { ES_FIRST_OPT_COORD.x, optionYCoord }, ES_COLOR, ES_SELECT_COLOR);
+	}
 }
 
 void CENDSCREEN::handleEnter(int currY) {
 	if (currY == ES_FIRST_OPT_COORD.y) playAgainChosen = true;
-	else if (currY == ES_FIRST_OPT_COORD.y + OPTION_GAP) toMenuChosen = true;
-	else if (currY == ES_FIRST_OPT_COORD.y + OPTION_GAP * 2) exitChosen = true;
+	else if (currY == ES_FIRST_OPT_COORD.y + endScreenConstraints::ES_OPTION_GAP) toMenuChosen = true;
+	else if (currY == ES_FIRST_OPT_COORD.y + endScreenConstraints::ES_OPTION_GAP * 2) exitChosen = true;
 }
 
 void CENDSCREEN::handleInput() {
@@ -35,12 +34,12 @@ void CENDSCREEN::handleInput() {
 
 		switch (key) {
 		case 'W':
-			if (currY > ES_FIRST_OPT_COORD.y) currY -= 2;
+			if (currY > ES_FIRST_OPT_COORD.y) currY -= endScreenConstraints::ES_OPTION_GAP;
 			else currY = ES_LAST_OPT_COORD.y;
 			drawInput(currY);
 			break;
 		case 'S':
-			if (currY < ES_LAST_OPT_COORD.y) currY += 2;
+			if (currY < ES_LAST_OPT_COORD.y) currY += endScreenConstraints::ES_OPTION_GAP;
 			else currY = ES_FIRST_OPT_COORD.y;
 			drawInput(currY);
 		}
