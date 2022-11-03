@@ -23,3 +23,7 @@ void CCAR::move() {
 	CCONSOLE::eraseGraphics({ x - fieldConstraints::HOR_SPEED, y }, { x, y + CAR_HEIGHT });
 	CCONSOLE::drawGraphics(CAR_SPRITE, { x, y }, CAR_COLOR);
 }
+
+void CCAR::makeSound() {
+	CCONSOLE::playSound("vehicleHit");
+}

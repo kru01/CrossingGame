@@ -1,5 +1,7 @@
 #include "CCONSOLE.h"
 
+bool Global_soundOn = true;
+
 void CCONSOLE::resizeAndCenterConsole(int width, int height) {
 	RECT rectWindow;
 	GetWindowRect(CONSOLE_WINDOW, &rectWindow);
@@ -20,9 +22,16 @@ void CCONSOLE::disableQuickEditMode() {
 	SetConsoleMode(CONSOLE_STD_INPUT, ENABLE_EXTENDED_FLAGS | (prevMode & ~ENABLE_QUICK_EDIT_MODE));
 }
 
+void CCONSOLE::getSoundPath(string& sound) {
+	string path = SOUND_PATH;
+	path.insert(path.size() - 4, sound);
+	sound = path;
+}
+
 void CCONSOLE::initConsoleWindow() {
 	// resizeAndCenterConsole is called in resizeCenterAndGetConsoleRowsCols
 	// This is lowkey stupid but it's the only way to init CONSOLE_WIDTH and CONSOLE_HEIGHT at runtime
+	SetConsoleTitleA("HCMUS - 21CLC05 - Team 2 | Crossing Game");
 	fixConsoleWindow();
 	system("color 70");
 	SetConsoleOutputCP(65001);
@@ -75,12 +84,19 @@ void CCONSOLE::flushKeyPressedAsync() {
 	isPressedAsync('S');
 	isPressedAsync('A');
 	isPressedAsync('D');
+	isPressedAsync(VK_UP);
+	isPressedAsync(VK_DOWN);
+	isPressedAsync(VK_LEFT);
+	isPressedAsync(VK_RIGHT);
 	isToggledAsync('E');
+	isToggledAsync('Q');
 	isToggledAsync('Z');
 	isToggledAsync('X');
 	isToggledAsync('C');
+	isToggledAsync(VK_ESCAPE);
 }
 
+// https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
 int CCONSOLE::getChArrowKeyPressed(int key) {
 	if (key != arrowKeys::NUMLOCK_ENABLED && key != arrowKeys::NUMLOCK_DISABLED) return key;
 	key = _getch();
@@ -143,4 +159,15 @@ void CCONSOLE::setColor(int text, int background) {
 void CCONSOLE::clearScreen() {
 	setColor(CONSOLE_TXT_COLOR, CONSOLE_BG_COLOR);
 	system("cls");
+}
+
+void CCONSOLE::playSound(string sound, bool isLoop) {
+	if (!Global_soundOn) return;
+	getSoundPath(sound);
+	if (isLoop) PlaySoundA(sound.c_str(), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	else PlaySoundA(sound.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void CCONSOLE::stopAllSound() {
+	PlaySoundA(NULL, NULL, NULL);
 }

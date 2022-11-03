@@ -18,3 +18,7 @@ void CCAT::move() {
 	CCONSOLE::eraseGraphics({ x + CAT_WIDTH - 1, y }, { x + CAT_WIDTH + fieldConstraints::HOR_SPEED + 1, y + CAT_HEIGHT });
 	CCONSOLE::drawGraphics(CAT_SPRITE, { x, y }, CAT_COLOR);
 }
+
+void CCAT::makeSound() {
+	CCONSOLE::playSound("catHit");
+}

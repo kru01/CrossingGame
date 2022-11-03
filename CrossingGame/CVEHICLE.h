@@ -12,6 +12,7 @@ public:
 	CVEHICLE(int x, int y);
 
 	virtual void move() = 0;
+	virtual void makeSound() = 0;
 
 	int getX();
 	int getY();

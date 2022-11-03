@@ -9,6 +9,7 @@
 const string HUMAN_SPRITE = "assets/objects/human.txt";
 const string HUMAN_CHEER_SPRITE = "assets/objects/humanCheering.txt";
 const int HUMAN_WIDTH = 3, HUMAN_HEIGHT = 3;
+const int HUMAN_SOUND_NUM = 4;
 
 const int HUMAN_COLOR = colors::BLACK;
 const int HUMAN_HIT_COLOR = colors::RED;
@@ -30,6 +31,7 @@ public:
 	void goDown();
 	void goLeft();
 	void goRight();
+	void makeSound();
 
 	bool isImpact(CVEHICLE* obj);
 	bool isImpact(CANIMAL* obj);

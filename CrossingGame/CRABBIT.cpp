@@ -18,3 +18,7 @@ void CRABBIT::move() {
 	CCONSOLE::eraseGraphics({ x - fieldConstraints::HOR_SPEED, y }, { x, y + RABBIT_HEIGHT });
 	CCONSOLE::drawGraphics(RABBIT_SPRITE, { x, y }, RABBIT_COLOR);
 }
+
+void CRABBIT::makeSound() {
+	CCONSOLE::playSound("rabbitHit");
+}

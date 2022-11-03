@@ -86,8 +86,9 @@ class CMAINMENU {
 	void drawSetting();
 	static void drawSettingInput(int currY);
 	void drawLevelNum();
-	void toggleSound(bool isLeft);
 	void setLevel(bool isLeft);
+	void drawSoundState();
+	void toggleSound();
 
 public:
 	CMAINMENU();

@@ -14,4 +14,5 @@ public:
 	CBUS(int x, int y);
 
 	void move();
+	void makeSound();
 };

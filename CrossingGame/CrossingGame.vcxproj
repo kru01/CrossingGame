@@ -76,6 +76,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +92,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,6 +124,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -188,6 +194,25 @@
     <Text Include="assets\objects\humanCheering.txt" />
     <Text Include="assets\objects\rabbit.txt" />
     <Text Include="assets\objects\trafficLight.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\background1.wav" />
+    <Media Include="assets\sounds\background2.wav" />
+    <Media Include="assets\sounds\catHit.wav" />
+    <Media Include="assets\sounds\fileLoad.wav" />
+    <Media Include="assets\sounds\fileSave.wav" />
+    <Media Include="assets\sounds\gameOn.wav" />
+    <Media Include="assets\sounds\gameOver.wav" />
+    <Media Include="assets\sounds\gameWon.wav" />
+    <Media Include="assets\sounds\human1.wav" />
+    <Media Include="assets\sounds\human2.wav" />
+    <Media Include="assets\sounds\human3.wav" />
+    <Media Include="assets\sounds\human4.wav" />
+    <Media Include="assets\sounds\menuDown.wav" />
+    <Media Include="assets\sounds\menuSelect.wav" />
+    <Media Include="assets\sounds\menuUp.wav" />
+    <Media Include="assets\sounds\rabbitHit.wav" />
+    <Media Include="assets\sounds\vehicleHit.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

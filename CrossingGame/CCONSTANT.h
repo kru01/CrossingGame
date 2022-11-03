@@ -58,7 +58,7 @@ const std::vector<int> LANE_YCOORD = {
 
 
 const std::string GUIDEBOX_SPRITE = "assets/gameInterfaces/guideBox.txt";
-const int GUIDEBOX_COLOR = colors::BLACK;
+const int GUIDEBOX_COLOR = colors::BLUE;
 
 const std::string NUMBER_SPRITE = "assets/gameInterfaces/numbers/0.txt";
 const int NUMBER_WIDTH = 5, NUMBER_HEIGHT = 4;

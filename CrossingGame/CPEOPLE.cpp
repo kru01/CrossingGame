@@ -34,6 +34,12 @@ void CPEOPLE::goRight() {
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { x, y },HUMAN_COLOR);
 }
 
+void CPEOPLE::makeSound() {
+	string sound = "human";
+	sound += to_string(CCONSOLE::getRandInt(1, HUMAN_SOUND_NUM));
+	CCONSOLE::playSound(sound);
+}
+
 bool CPEOPLE::isImpact(CVEHICLE* obj) {
 	return x >= obj->getX() - HUMAN_WIDTH && x <= obj->getX() + obj->getWidth()
 		&& y >= obj->getY() && y <= obj->getY() + obj->getHeight();

@@ -14,4 +14,5 @@ public:
 	CCAR(int x, int y);
 
 	void move();
+	void makeSound();
 };

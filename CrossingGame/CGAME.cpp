@@ -16,11 +16,7 @@ CGAME::CGAME(CENDSCREEN* endScreen) {
 
 		if (entry.is_regular_file() && entryPath.extension().string() == SAVEFILE_EXTENSION) {
 			string fileName = entryPath.stem().string();
-
-			transform(fileName.begin(), fileName.end(), fileName.begin(), [](char& ch) {
-				return tolower(ch);
-				});
-
+			decapitalizeString(fileName);
 			savesSet.insert(fileName);
 		}
 	}
@@ -75,7 +71,10 @@ void CGAME::updatePosObject(vector<Obj*>& objVect) {
 	for (int i = 0; i < objVect.size(); i++) {
 		if (objVect[i]->canMove()) {
 			objVect[i]->move();
-			if (player->isImpact(objVect[i])) player->setDead(true);
+			if (player->isImpact(objVect[i])) {
+				player->setDead(true);
+				objVect[i]->makeSound();
+			}
 			continue;
 		}
 
@@ -96,7 +95,9 @@ bool CGAME::checkImpactPeopleAndDrawEffect() {
 	for (auto& human : humansVect)
 		if (player->isImpact(human)) {
 			impacted = true;
+			human->makeSound();
 			impactPeopleEffect(human);
+			CCONSOLE::playSound("background2", true);
 		}
 
 	return impacted;
@@ -111,12 +112,13 @@ void CGAME::impactPeopleEffect(CPEOPLE*& victim) {
 
 	const int remarkPos = CCONSOLE::getRandInt(0, HUMAN_REMARKS.size() - 1);
 	CCONSOLE::drawTexts(HUMAN_REMARKS[remarkPos], { victim->getX(), victim->getY() - REMARKS_OFFSET }, HUMAN_HIT_COLOR);
-	Sleep(EFFECT_DURATION);
+	Sleep(EFFECT_DURATION + 50);
 	CCONSOLE::drawGraphics(HUMAN_SPRITE, { victim->getX(), victim->getY() }, HUMAN_COLOR);
 	CCONSOLE::eraseTexts({ victim->getX(), victim->getY() - REMARKS_OFFSET }, HUMAN_REMARKS[remarkPos].length());
 }
 
 void CGAME::playerWinEffect() {
+	CCONSOLE::playSound("gameWon");
 	for (int i = 0; i < EFFECT_LOOP; i++) {
 		for (auto& human : humansVect) CCONSOLE::drawGraphics(HUMAN_CHEER_SPRITE, { human->getX(), human->getY() }, HUMAN_CHEER_COLOR);
 		Sleep(EFFECT_DURATION);
@@ -176,7 +178,7 @@ void CGAME::drawLevelNum(int level) {
 	if (level < 10) lvNum.push_back('0');
 	lvNum += to_string(level);
 
-	numSprite[numSprite.size() - 5] = lvNum[0];
+	numSprite[numSprite.size() - 5] = lvNum[0]; // -5 is the spot right before .txt
 	CCONSOLE::drawGraphics(numSprite, { guideBoxConstraints::LV_NUM_XCOORD, guideBoxConstraints::LV_NUM_YCOORD }, GUIDEBOX_COLOR);
 	numSprite[numSprite.size() - 5] = lvNum[1];
 	CCONSOLE::drawGraphics(numSprite, { guideBoxConstraints::LV_NUM_XCOORD + NUMBER_WIDTH, guideBoxConstraints::LV_NUM_YCOORD }, GUIDEBOX_COLOR);
@@ -212,6 +214,7 @@ bool CGAME::advanceLevel() {
 void CGAME::runGameOver() {
 	CCONSOLE::clearScreen();
 	isInProgress = false;
+	CCONSOLE::playSound("gameOver");
 	endScreen->runEndScreen(true);
 }
 
@@ -384,13 +387,22 @@ void CGAME::readTFLightFromFile(ifstream& fin, Obj& tfLight) {
 
 void CGAME::populateHumansVect() {
 	set<int> randomXCoords;
-	for (auto& human : humansVect) randomXCoords.insert(human->getX());
+	for (auto& human : humansVect) {
+		if (!randomXCoords.insert(human->getX()).second) continue;
+		for (int i = human->getX() - HUMAN_WIDTH; i < human->getX(); i++)
+			randomXCoords.insert(i);
+	}
 
-	while (randomXCoords.size() != level - 1)
-		randomXCoords.insert(CCONSOLE::getRandInt(fieldConstraints::BOUND_LEFT, fieldConstraints::BOUND_RIGHT));
+	while (humansVect.size() < level - 1) {
+		const int randX = CCONSOLE::getRandInt(fieldConstraints::BOUND_LEFT, fieldConstraints::BOUND_RIGHT - HUMAN_WIDTH);
+		if(abs(randX - HUMAN_SPAWN_COORD.x) % fieldConstraints::HOR_SPEED != 0 || !randomXCoords.insert(randX).second)
+			continue;
+		
+		for (int i = randX - HUMAN_WIDTH; i < randX; i++)
+			randomXCoords.insert(i);
 
-	for (auto& x : randomXCoords)
-		humansVect.push_back(new CPEOPLE(x, fieldConstraints::F_TOP + 1));
+		humansVect.push_back(new CPEOPLE(randX, fieldConstraints::F_TOP + 1));
+	}
 }
 
 void CGAME::initGameGraphics() {
@@ -403,6 +415,7 @@ void CGAME::initGameGraphics() {
 }
 
 void CGAME::runGame() {
+	CCONSOLE::playSound("background1", true);
 	while (isInProgress) {
 		tfLightCars.updateLightStatus(carsVect, vehicles::CAR);
 		tfLightBuses.updateLightStatus(busesVect, vehicles::BUS);
@@ -502,6 +515,7 @@ void CGAME::saveGame() {
 	writeTFLightToFile(fout, tfLightCars);
 	writeTFLightToFile(fout, tfLightBuses);
 	fout.close();
+	CCONSOLE::playSound("fileSave");
 	CCONSOLE::drawTexts("Saved successfully!", { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD + SAVEFILE_LIMIT + 4 }, GUIDEBOX_COLOR);
 }
 
@@ -563,6 +577,7 @@ bool CGAME::loadGame(bool isInGame) {
 	readTFLightFromFile(fin, tfLightBuses);
 	fin.close();
 
+	CCONSOLE::playSound("fileLoad");
 	initGameGraphics();
 	CCONSOLE::drawTexts("Savefile loaded successfully!", { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD + guideBoxConstraints::TEXT_BOX_HEIGHT - 1 }, GUIDEBOX_COLOR);
 	return true;

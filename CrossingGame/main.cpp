@@ -11,6 +11,7 @@ int main() {
 	CENDSCREEN endScreen;
 	CGAME* game = new CGAME(&endScreen);
 	bool isNewOrLoadGame = false;
+	CCONSOLE::playSound("gameOn");
 
 	while (true) {
 		mainMenu.runMenu();
@@ -53,6 +54,12 @@ int main() {
 						gameRunner = thread(&CGAME::runGame, game);
 					} else game->pauseGame();
 
+				if (CCONSOLE::isToggledAsync('Q')) {
+					Global_soundOn = !Global_soundOn;
+					if (!Global_soundOn) CCONSOLE::stopAllSound();
+					else CCONSOLE::playSound("background1", true);
+				}
+
 				if (CCONSOLE::isToggledAsync('Z')) {
 					game->pauseGame();
 					gameRunner.join();
@@ -74,6 +81,7 @@ int main() {
 					delete game;
 					game = new CGAME(&endScreen);
 					isNewOrLoadGame = false;
+					CCONSOLE::stopAllSound();
 					CCONSOLE::clearScreen();
 					break;
 				}
@@ -98,6 +106,7 @@ int main() {
 					game = new CGAME(&endScreen);
 					isNewOrLoadGame = false;
 					endScreen.clearChoice();
+					CCONSOLE::stopAllSound();
 					CCONSOLE::clearScreen();
 					break;
 

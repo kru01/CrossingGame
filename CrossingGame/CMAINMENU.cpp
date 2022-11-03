@@ -41,15 +41,18 @@ void CMAINMENU::handleInput() {
 		case 'W':
 			if (currY > MENU_FIRST_OPT_COORD.y) currY -= menuConstraints::MENU_OPTION_GAP;
 			else currY = MENU_LAST_OPT_COORD.y;
+			CCONSOLE::playSound("menuUp");
 			drawInput(currY);
 			break;
 		case 'S':
 			if (currY < MENU_LAST_OPT_COORD.y) currY += menuConstraints::MENU_OPTION_GAP;
 			else currY = MENU_FIRST_OPT_COORD.y;
+			CCONSOLE::playSound("menuDown");
 			drawInput(currY);
 		}
 
 		if (key == VK_RETURN) {
+			CCONSOLE::playSound("menuSelect");
 			handleEnter(currY);
 			return;
 		}
@@ -60,7 +63,7 @@ void CMAINMENU::drawSetting() {
 	CCONSOLE::drawGraphics(SETTING_SPRITE, SETTING_DRAW_COORD, SETTING_BOX_COLOR);
 	CCONSOLE::drawGraphics(SETTING_SYMBOL_SPRITE, SETTING_SYMBOL_COORD, SETTING_SYMBOL_COLOR);
 	drawLevelNum();
-	CCONSOLE::drawTexts("ON", {SETTING_SYMBOL_COORD.x + menuConstraints::SETTING_SYMBOL_GAP, SETTING_SYMBOL_COORD.y + menuConstraints::SETTING_SYMBOL_GAP }, colors::GREEN);
+	drawSoundState();
 }
 
 void CMAINMENU::drawSettingInput(int currY) {
@@ -75,6 +78,7 @@ void CMAINMENU::drawSettingInput(int currY) {
 void CMAINMENU::drawLevelNum() {
 	string num = to_string(gameLevel);
 	if (gameLevel < 10) num.insert(0, 1, '0');
+	num.insert(1, 1, ' ');
 	CCONSOLE::drawTexts(num, { SETTING_SYMBOL_COORD.x + menuConstraints::SETTING_SYMBOL_GAP, SETTING_SYMBOL_COORD.y }, colors::RED);
 }
 
@@ -87,8 +91,15 @@ void CMAINMENU::setLevel(bool isLeft) {
 	drawLevelNum();
 }
 
-void CMAINMENU::toggleSound(bool isLeft) {
-	
+void CMAINMENU::drawSoundState() {
+	CCONSOLE::drawTexts((Global_soundOn ? "O N" : "OFF"),
+		{ SETTING_SYMBOL_COORD.x + menuConstraints::SETTING_SYMBOL_GAP, SETTING_SYMBOL_COORD.y + menuConstraints::SETTING_SYMBOL_GAP },
+		(Global_soundOn ? colors::GREEN : colors::RED));
+}
+
+void CMAINMENU::toggleSound() {
+	Global_soundOn = !Global_soundOn;
+	drawSoundState();
 }
 
 void CMAINMENU::runMenu() {
@@ -114,24 +125,30 @@ void CMAINMENU::handleSetting() {
 		case 'W':
 			if (currY > SETTING_FIRST_OPT_COORD.y) currY -= menuConstraints::MENU_OPTION_GAP;
 			else currY = SETTING_LAST_OPT_COORD.y;
+			CCONSOLE::playSound("menuUp");
 			drawSettingInput(currY);
 			break;
 		case 'S':
 			if (currY < SETTING_LAST_OPT_COORD.y) currY += menuConstraints::MENU_OPTION_GAP;
 			else currY = SETTING_FIRST_OPT_COORD.y;
+			CCONSOLE::playSound("menuDown");
 			drawSettingInput(currY);
 			break;
 		case 'A':
 			if (currY == SETTING_FIRST_OPT_COORD.y) setLevel(true);
-			if (currY == SETTING_FIRST_OPT_COORD.y + menuConstraints::MENU_OPTION_GAP) toggleSound(true);
+			if (currY == SETTING_FIRST_OPT_COORD.y + menuConstraints::MENU_OPTION_GAP) toggleSound();
+			CCONSOLE::playSound("menuSelect");
 			break;
 		case 'D':
 			if (currY == SETTING_FIRST_OPT_COORD.y) setLevel(false);
-			if (currY == SETTING_FIRST_OPT_COORD.y + menuConstraints::MENU_OPTION_GAP) toggleSound(false);
+			if (currY == SETTING_FIRST_OPT_COORD.y + menuConstraints::MENU_OPTION_GAP) toggleSound();
+			CCONSOLE::playSound("menuSelect");
 		}
 
-		if (key == VK_RETURN && currY == SETTING_LAST_OPT_COORD.y)
+		if (key == VK_RETURN && currY == SETTING_LAST_OPT_COORD.y) {
+			CCONSOLE::playSound("menuSelect");
 			return;
+		}
 	}
 }
 
@@ -149,6 +166,7 @@ void CMAINMENU::handleAbout() {
 		case VK_ESCAPE:
 		case VK_BACK:
 		case VK_SPACE:
+			CCONSOLE::playSound("menuSelect");
 			return;
 		}
 	}

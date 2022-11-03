@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\gameInterfaces\numbers">
       <UniqueIdentifier>{ae55e10b-d1e3-4fb2-b464-bfea6e29b02a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\sounds">
+      <UniqueIdentifier>{c92ddd37-7dba-4c9b-a041-ccf8238b7231}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -196,5 +199,58 @@
     <Text Include="assets\mainMenu\settingSymbols.txt">
       <Filter>Resource Files\mainMenu</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\catHit.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\fileLoad.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\fileSave.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\gameOn.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\gameOver.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\gameWon.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\menuDown.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\menuSelect.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\menuUp.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\rabbitHit.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\vehicleHit.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\human1.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\human2.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\human3.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\human4.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\background1.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+    <Media Include="assets\sounds\background2.wav">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #pragma once
+#pragma comment(lib, "winmm.lib")
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -17,10 +18,14 @@ const int CONSOLE_WIDTH_PX = 1400, CONSOLE_HEIGHT_PX = 800;
 const int CONSOLE_TXT_COLOR = colors::BLACK;
 const int CONSOLE_BG_COLOR = colors::WHITE;
 
+const string SOUND_PATH = "assets/sounds/.wav";
+extern bool Global_soundOn;
+
 class CCONSOLE {
 	static void resizeAndCenterConsole(int width, int height);
 	static void fixConsoleWindow();
 	static void disableQuickEditMode();
+	static void getSoundPath(string& sound);
 
 public:
 	static void initConsoleWindow();
@@ -40,6 +45,9 @@ public:
 	static void eraseGraphics(POINT start, POINT end, int background = CONSOLE_BG_COLOR);
 	static void setColor(int text, int background = CONSOLE_BG_COLOR);
 	static void clearScreen();
+
+	static void playSound(string sound, bool isLoop = false);
+	static void stopAllSound();
 };
 
 // 190 x 47

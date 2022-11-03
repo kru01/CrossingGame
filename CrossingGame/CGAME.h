@@ -17,7 +17,7 @@
 
 // FIELD_SPRITE and FIELD_COLOR are in CCONSTANT.h
 const int OBJECT_ONSCREEN_LIMIT = 5, OBJECT_GAP = 20;
-const int EFFECT_LOOP = 5, EFFECT_DURATION = 250;
+const int EFFECT_LOOP = 5, EFFECT_DURATION = 200;
 const int RENDER_SPEED = 300; // lower is faster but laggier
 
 const string SAVEFILE_PATH = "assets/savefiles/";
