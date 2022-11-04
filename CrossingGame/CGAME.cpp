@@ -306,12 +306,50 @@ string CGAME::promptSavefileName(bool isInGame) {
 	}
 
 	CCONSOLE::drawTexts("Input savefile's name:", { drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 1 }, color);
-	
 	FlushConsoleInputBuffer(CONSOLE_STD_INPUT);
 	CCONSOLE::goToXY(drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 2);
 	CCONSOLE::showConsoleCursor(true);
-	string buffer;
-	cin >> buffer;
+
+	//limit input length
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
+	COORD lastPos = info.dwCursorPosition;
+
+	string buffer = "";
+	int keystroke = 0, inputLen = 0; 
+
+	while (true) {
+		if (_kbhit()) {
+			keystroke = _getch();
+
+			if (isalnum(keystroke) || keystroke == ' ') {
+				if (inputLen + 1 > SAVEFILE_MAX_LENGTH) continue;
+				inputLen++;
+				cout << char(keystroke);
+				buffer += char(keystroke); 
+
+				GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
+				lastPos = info.dwCursorPosition;
+
+			} else if (keystroke == VK_BACK) {
+				if (inputLen - 1 < 0) continue;
+				inputLen--;
+				buffer.pop_back();
+
+				CCONSOLE::goToXY(short(lastPos.X - 1), lastPos.Y); 
+				cout << ' ';
+				CCONSOLE::goToXY(short(lastPos.X - 1), lastPos.Y);
+
+				GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
+				lastPos = info.dwCursorPosition;
+
+			} else if (keystroke == VK_RETURN) {
+				cout << endl; 
+				break;
+			}
+		}
+	}
+
 	CCONSOLE::showConsoleCursor(false);
 	cin.ignore(cin.rdbuf()->in_avail()); // refer to https://cplusplus.com/forum/beginner/178692/
 	CCONSOLE::flushKeyPressedAsync();
