@@ -305,49 +305,45 @@ string CGAME::promptSavefileName(bool isInGame) {
 		color = LOAD_BOX_TXT_COLOR;
 	}
 
-	CCONSOLE::drawTexts("Input savefile's name (max 30 characters):", { drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 1 }, color);
-	
+	CCONSOLE::drawTexts("Input savefile's name:", { drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 1 }, color);
 	FlushConsoleInputBuffer(CONSOLE_STD_INPUT);
 	CCONSOLE::goToXY(drawCoord.x, drawCoord.y + SAVEFILE_LIMIT + 2);
 	CCONSOLE::showConsoleCursor(true);
 
 	//limit input length
-	COORD lastPos;
 	CONSOLE_SCREEN_BUFFER_INFO info;
-	string buffer;
-	int inputLen = 0; 
-	const int MAX_INPUT = 30; 
 	GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
-	lastPos = info.dwCursorPosition;
+	COORD lastPos = info.dwCursorPosition;
+
+	string buffer = "";
+	int keystroke = 0, inputLen = 0; 
+
 	while (true) {
-		if (_kbhit())
-		{
-			int keystroke = _getch();
+		if (_kbhit()) {
+			keystroke = _getch();
+
 			if (isalnum(keystroke) || keystroke == ' ') {
-				if (inputLen + 1 > MAX_INPUT) continue;
-				++inputLen;
+				if (inputLen + 1 > SAVEFILE_MAX_LENGTH) continue;
+				inputLen++;
 				cout << char(keystroke);
 				buffer += char(keystroke); 
+
 				GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
 				lastPos = info.dwCursorPosition;
-			}
-			else if (keystroke == 8) //backspace
-			{
-				if (inputLen - 1 >= 0)
-				{
-					--inputLen;
-					buffer.pop_back();
 
-					CCONSOLE::goToXY(short(lastPos.X - 1), lastPos.Y); 
-					std::cout << ' ';
-					CCONSOLE::goToXY(short(lastPos.X - 1), lastPos.Y);
+			} else if (keystroke == VK_BACK) {
+				if (inputLen - 1 < 0) continue;
+				inputLen--;
+				buffer.pop_back();
 
-					GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
-					lastPos = info.dwCursorPosition;
-				}
-			}
-			else if (keystroke == 13) //enter
-			{
+				CCONSOLE::goToXY(short(lastPos.X - 1), lastPos.Y); 
+				cout << ' ';
+				CCONSOLE::goToXY(short(lastPos.X - 1), lastPos.Y);
+
+				GetConsoleScreenBufferInfo(CONSOLE_STD_OUTPUT, &info);
+				lastPos = info.dwCursorPosition;
+
+			} else if (keystroke == VK_RETURN) {
 				cout << endl; 
 				break;
 			}
