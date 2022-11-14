@@ -4,11 +4,13 @@
 
 Game project for the HCMUS' 2022 Object-Oriented Programming course.
 
-<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center">
-  <img style="width:49%; height=auto; border-radius:15px" src="READMEsrc/menuShowcase.gif">
-  <img style="width:49%; height=auto; border-radius:15px" src="READMEsrc/playthrough.gif">
-  <img style="width:49%; height=auto; border-radius:15px" src="READMEsrc/dialogueShowcase.gif">
-  <img style="width:49%; height=auto; border-radius:15px" src="READMEsrc/deathShowcase.gif">
+<div align="center">
+  <img alt="menuShowcase" src="READMEsrc/menuShowcase.gif" width="45%" height="auto">
+  <img alt="playthrough" src="READMEsrc/playthrough.gif" width="45%" height="auto">
+</div>
+<div align="center">
+  <img alt="dialogueShowcase" src="READMEsrc/dialogueShowcase.gif" width="45%" height="auto">
+  <img alt="deathShowcase" src="READMEsrc/deathShowcase.gif" width="45%" height="auto">
 </div>
 
 ## Getting Started
@@ -55,11 +57,11 @@ Game project for the HCMUS' 2022 Object-Oriented Programming course.
 
 ## Meet The Team
 
-<div style="display:flex; gap:25px; justify-content:center">
-  <a href="https://github.com/nminhkhoi0818"><img alt="nminhkhoi0818" src="https://github.com/nminhkhoi0818.png" style="width:50px; height:auto; border-radius:15px"></a>
-  <a href="https://github.com/kru01"><img alt="kru01" src="https://github.com/kru01.png" style="width:50px; height:auto; border-radius:15px"></a>
-  <a href="https://github.com/SennHCMUS"><img alt="SennHCMUS" src="https://github.com/SennHCMUS.png" style="width:50px; height:auto; border-radius:15px"></a>
-  <a href="https://github.com/vmathu"><img alt="vmathu" src="https://github.com/vmathu.png" style="width:50px; height:auto; border-radius:15px"></a>
+<div align="center">
+  <a href="https://github.com/nminhkhoi0818"><img alt="nminhkhoi0818" src="https://github.com/nminhkhoi0818.png" width="60px" height="auto"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/kru01"><img alt="kru01" src="https://github.com/kru01.png" width="60px" height="auto"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/SennHCMUS"><img alt="SennHCMUS" src="https://github.com/SennHCMUS.png" width="60px" height="auto"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/vmathu"><img alt="vmathu" src="https://github.com/vmathu.png" width="60px" height="auto"></a>
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
