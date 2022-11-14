@@ -1,0 +1,38 @@
+┌─────────────────────────────────┐
+│   _             _    ___  ___   │
+│  | |_____ _____| |  / _ \/ _ \  │
+│  | / -_) V / -_) |  \_, /\_, /  │
+│  |_\___|\_/\___|_|   /_/  /_/   │
+│                                 │
+│╔═══════════════════════════════╗│
+│║ GAME STATUS:                  ║│
+│╚═══════════════════════════════╝│
+│╔═══════════════════════════════╗│
+│║ [E]   Resume/Pause Game       ║│
+│║ [Q]   Toggle Sound            ║│
+│║ [Z]   Save Game               ║│
+│║ [X]   Load Game               ║│
+│║ [C]   Back To Menu            ║│
+│║ [ESC] Exit Game               ║│
+│╚═══════════════════════════════╝│
+│╔═══════════════════════════════╗│
+│║ -WASD or arrow keys to move.  ║│
+│║ -Get 5 people across to win.  ║│
+│║ -Objects' positions are ran-  ║│
+│║ domized each level.           ║│
+│║ -Traffic time are randomized  ║│
+│║ at the start of each game.    ║│
+│║                               ║│
+│║ -Filename must be under 11    ║│
+│║ characters and NOT contain    ║│
+│║ spaces, special symbols and   ║│
+│║ is case-insensitive.          ║│
+│║ -Savefiles are limited to 10. ║│
+│║ -Once the limit is hit, the   ║│
+│║ topmost file will be deleted. ║│
+│║ -Inputting the same name with ║│
+│║ a savefile will overwrite it. ║│
+│║                               ║│
+│║                               ║│
+│╚═══════════════════════════════╝│
+└─────────────────────────────────┘
