@@ -558,7 +558,7 @@ void CGAME::saveGame() {
 }
 
 bool CGAME::loadGame(bool isInGame) {
-	eraseTextBoxContent();
+	if(isInGame) eraseTextBoxContent();
 	listSavefile(isInGame);
 
 	POINT errorCoord = { guideBoxConstraints::TEXT_BOX_XCOORD, guideBoxConstraints::TEXT_BOX_YCOORD };
